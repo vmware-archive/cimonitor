@@ -1,17 +1,16 @@
-ActionController::Routing::Routes.draw do |map|
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.resource :login, :controller => "sessions"
-  map.register '/register', :controller => 'users', :action => 'create'
-  map.signup '/signup', :controller => 'users', :action => 'new'
-  map.resources :users
+Pulse::Application.routes.draw do
+  match '/logout' => 'sessions#destroy', :as => :logout
+  resource :session
+  resource :login
 
-  map.resource :session
+  resources :users
+  match '/register' => 'users#create', :as => :register
+  match '/signup'   => 'users#new', :as => :signup
 
-  map.home_page '', :controller => "default", :action => "show"
+  resource  :pulse
+  resources :projects
+  resources :messages
 
-  map.resource :pulse, :controller => :pulse
-  map.resources :projects
-  map.resources :messages
-
-  map.root :controller => 'default', :action => 'show'
+  match ''  => 'default#show', :as => :home_page
+  root  :to => 'default#show'
 end

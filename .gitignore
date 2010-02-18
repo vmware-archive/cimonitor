@@ -1,6 +1,7 @@
+.bundle
 .idea/
 log/*.log
-tmp/
+tmp/**/*
 *.iml
 *.ipr
 config/database.yml
