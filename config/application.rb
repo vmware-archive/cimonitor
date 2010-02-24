@@ -40,9 +40,7 @@ module Pulse
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
+
+    ::RED_NOTIFICATION_EMAILS = ["notfiy@example.com"]
   end
 end
-
-::RED_NOTIFICATION_EMAILS = ["notfiy@example.com"]
-
-SslRequirement.disable_ssl_check = true

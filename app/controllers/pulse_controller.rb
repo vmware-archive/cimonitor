@@ -1,8 +1,7 @@
 class PulseController < ApplicationController
   def show
-    @projects = Project.with_options(:conditions => {:enabled => true}, :order => 'name', :include => :statuses) do |sorted|
-      params[:tags] ? sorted.find_tagged_with(params[:tags]) : sorted.find(:all)
-    end
+    @projects = Project.where(:enabled => true).order("name").includes(:statuses)
+    @projects = @projects.find_tagged_with(params[:tags]) if params[:tags]
 
     @messages = Message.all
   end

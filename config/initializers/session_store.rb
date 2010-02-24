@@ -6,7 +6,7 @@
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
   :key    => '_pulse_session',
-  :secret => 'ReplaceWithYourOwnSecret'
+  :secret => "ReplaceWithYourOwnSecretThatIsAtLeastThirtyCharactersLong"
 }
 
 # Use the database for sessions instead of the cookie-based default,
