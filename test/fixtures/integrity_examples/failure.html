@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'> 
+  <head> 
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' /> 
+    <meta content='en' http-equiv='Content-Language' /> 
+    <title>Pulse | integrity</title> 
+    <link href='/reset.css' rel='stylesheet' type='text/css' /> 
+    <link href='/buttons.css' rel='stylesheet' type='text/css' /> 
+    <link href='/integrity.css' rel='stylesheet' type='text/css' /> 
+  </head> 
+  <body> 
+    <div id='header'> 
+      <h1><a href="/">projects</a> / Pulse</h1> 
+      <address class='watermark'> 
+        checked with
+        <a href='http://integrityapp.com' title='The fun continuous integration server'>integrity</a> 
+      </address> 
+    </div> 
+    <div id='content'> 
+      <div id='administrative'> 
+        <a href='/pulse/edit'>Edit Project</a> 
+      </div> 
+      <div class='failed' id='last_build'> 
+        <h1>Built cfce2b2 and failed</h1> 
+        <form action='/pulse/builds/12' method='post'> 
+          <p class='submit'> 
+            <button title='Rebuild this commit' type='submit'>Rebuild</button> 
+          </p> 
+        </form> 
+        <blockquote> 
+          <p>Merge branch 'pivotal-master'</p> 
+          <p class='meta'><span class='who'>by: Joseph Moore</span> 
+          |
+          <span class='when' title='2010-03-27T20:54:17-07:00'>today</span> 
+          |
+          <span class='what'>commit: cfce2b2b696e93408dfc6ebbcf3cd9774de033dc</span></p> 
+        </blockquote> 
+        <h2>Build Output:</h2> 
+        <pre class='output'>/opt/local/lib/ruby/gems/1.8/gems/bundler-0.9.7/lib/bundler/resolver.rb:97:Warning: Gem::Dependency#version_requirements is deprecated and will be removed on or after August 2010.  Use #requirement&#x000A;(in /Users/jlm/dev/integrity/builds/12)&#x000A;/opt/local/lib/ruby/gems/1.8/gems/bundler-0.9.7/lib/bundler/resolver.rb:97:Warning: Gem::Dependency#version_requirements is deprecated and will be removed on or after August 2010.  Use #requirement&#x000A;/opt/local/lib/ruby/gems/1.8/gems/bundler-0.9.7/lib/bundler/shared_helpers.rb:81:in `gem&#39;: bundler is not part of the bundle. Add it to Gemfile. (Gem::LoadError)&#x000A;	from /Users/jlm/.bundle/ruby/1.8/bin/bundle:18&#x000A;rake aborted!&#x000A;&#39;bundle install&#39; command failed.  gem install bundler if it is not installed&#x000A;/Users/jlm/dev/integrity/builds/12/Rakefile:4:in `require&#39;&#x000A;(See full trace by running task with --trace)&#x000A;</pre> 
+      </div> 
+      <form action='/pulse/builds' method='post'> 
+        <p class='submit manual-build'> 
+          <button title='Fetch the last commit from the remote repository and build it' type='submit'>Fetch and build</button> 
+        </p> 
+      </form> 
+      <h2>Builds</h2> 
+      <ul id='previous_builds'> 
+        <li class='failed'> 
+          <a href='/pulse/builds/12'> 
+            <strong class='build'>Build cfce2b2</strong> 
+            <span class='attribution'>by Joseph Moore, today</span> 
+          </a> 
+        </li> 
+        <li class='success'> 
+          <a href='/pulse/builds/11'> 
+            <strong class='build'>Build cfce2b2</strong> 
+            <span class='attribution'>by Joseph Moore, today</span> 
+          </a> 
+        </li> 
+        <li class='success'> 
+          <a href='/pulse/builds/10'> 
+            <strong class='build'>Build cfce2b2</strong> 
+            <span class='attribution'>by Joseph Moore, today</span> 
+          </a> 
+        </li> 
+      </ul> 
+    </div> 
+  </body> 
+</html>
