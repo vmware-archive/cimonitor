@@ -3,7 +3,7 @@ require 'nokogiri'
 
 shared_examples_for "integrity status for a valid build history xml response" do
   it "should return the link to the checkin" do
-    @@status_parser.url.should == 'http://project/example/build/12'
+    @@status_parser.url.should == 'http://project/example/builds/12'
   end
 
   it "should return the published date of the checkin" do

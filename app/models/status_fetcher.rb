@@ -8,11 +8,12 @@ class StatusFetcher
     errors = []
     projects = Project.find(:all)
     projects.each do |project|
-      status = fetch_build_history(project)
-      errors << status[:error] if status[:error]
-
-      # Ignoring errors fetching building status at the moment.  Do we care?
       fetch_building_status(project)
+      unless project.building?
+        status = fetch_build_history(project) 
+        errors << status[:error] if status[:error]
+      end
+      # Ignoring errors fetching building status at the moment.  Do we care?
     end
 
     unless errors.empty?

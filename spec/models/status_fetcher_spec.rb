@@ -195,10 +195,20 @@ describe StatusFetcher do
       end
       
       it "should fetch build history and building status for all projects" do
-        project_count = Project.count
-        @fetcher.should_receive(:fetch_build_history).exactly(project_count).times.and_return({:success => true})
-        @fetcher.should_receive(:fetch_building_status).exactly(project_count).times.and_return({:building => false})
+        all_project_count = Project.count
+        not_building_project_count = Project.count(:conditions => {:building => false})
+        @fetcher.should_receive(:fetch_build_history).exactly(not_building_project_count).times.and_return({:success => true})
+        @fetcher.should_receive(:fetch_building_status).exactly(all_project_count).times.and_return({:building => false})
 
+        @fetcher.fetch_all
+      end
+      
+      it "should not fetch building status for currently building projects" do
+        Project.stub(:find).with(:all).and_return([@project])
+        @project.stub!(:building?).and_return(true)
+        
+        @fetcher.should_receive(:fetch_build_history).never
+        @fetcher.should_receive(:fetch_building_status).once
         @fetcher.fetch_all
       end
       
