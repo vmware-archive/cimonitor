@@ -31,9 +31,9 @@ end
 
 describe StatusFetcher do
 
-  HISTORY_SUCCESS_XML = File.read('test/fixtures/cc_rss_examples/success.rss')
-  HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/cc_rss_examples/never_green.rss')
-  HISTORY_FAILURE_XML = File.read('test/fixtures/cc_rss_examples/failure.rss')
+  HISTORY_SUCCESS_XML = File.read('test/fixtures/cc_examples/success.rss')
+  HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/cc_examples/never_green.rss')
+  HISTORY_FAILURE_XML = File.read('test/fixtures/cc_examples/failure.rss')
   HISTORY_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
   before(:each) do
@@ -123,8 +123,8 @@ describe StatusFetcher do
   end
 
   describe "#fetch_building_status" do
-    BUILDING_XML = File.read('test/fixtures/building_status_examples/socialitis_building.xml')
-    NOT_BUILDING_XML = File.read('test/fixtures/building_status_examples/socialitis_not_building.xml')
+    BUILDING_XML = File.read('test/fixtures/cc_examples/socialitis_building.xml')
+    NOT_BUILDING_XML = File.read('test/fixtures/cc_examples/socialitis_not_building.xml')
     BUILDING_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
     context "with a valid response that the project is building" do

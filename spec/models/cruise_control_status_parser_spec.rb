@@ -17,9 +17,9 @@ end
 
 describe CruiseControlStatusParser do
 
-  CC_HISTORY_SUCCESS_XML = File.read('test/fixtures/cc_rss_examples/success.rss')
-  CC_HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/cc_rss_examples/never_green.rss')
-  CC_HISTORY_FAILURE_XML = File.read('test/fixtures/cc_rss_examples/failure.rss')
+  CC_HISTORY_SUCCESS_XML = File.read('test/fixtures/cc_examples/success.rss')
+  CC_HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/cc_examples/never_green.rss')
+  CC_HISTORY_FAILURE_XML = File.read('test/fixtures/cc_examples/failure.rss')
   CC_HISTORY_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
   describe "with reported success" do
@@ -60,8 +60,8 @@ describe CruiseControlStatusParser do
 end
 
 describe "building" do
-  CC_BUILDING_XML = File.read('test/fixtures/building_status_examples/socialitis_building.xml')
-  CC_NOT_BUILDING_XML = File.read('test/fixtures/building_status_examples/socialitis_not_building.xml')
+  CC_BUILDING_XML = File.read('test/fixtures/cc_examples/socialitis_building.xml')
+  CC_NOT_BUILDING_XML = File.read('test/fixtures/cc_examples/socialitis_not_building.xml')
   CC_BUILDING_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
   context "with a valid response that the project is building" do

@@ -15,9 +15,9 @@ end
 
 describe HudsonStatusParser do
 
-  HUDSON_HISTORY_SUCCESS_XML = File.read('test/fixtures/hudson_atom_examples/success.atom')
-  HUDSON_HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/hudson_atom_examples/never_green.atom')
-  HUDSON_HISTORY_FAILURE_XML = File.read('test/fixtures/hudson_atom_examples/failure.atom')
+  HUDSON_HISTORY_SUCCESS_XML = File.read('test/fixtures/hudson_examples/success.atom')
+  HUDSON_HISTORY_NEVER_GREEN_XML = File.read('test/fixtures/hudson_examples/never_green.atom')
+  HUDSON_HISTORY_FAILURE_XML = File.read('test/fixtures/hudson_examples/failure.atom')
   HUDSON_HISTORY_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
   describe "with reported success" do
@@ -55,8 +55,8 @@ describe HudsonStatusParser do
   end
 
   describe "building" do
-    HUDSON_BUILDING_XML = File.read('test/fixtures/building_status_examples/hudson_pulse_building.atom')
-    HUDSON_NOT_BUILDING_XML = File.read('test/fixtures/building_status_examples/hudson_pulse_not_building.atom')
+    HUDSON_BUILDING_XML = File.read('test/fixtures/hudson_examples/pulse_building.atom')
+    HUDSON_NOT_BUILDING_XML = File.read('test/fixtures/hudson_examples/pulse_not_building.atom')
     HUDSON_BUILDING_INVALID_XML = "<foo><bar>baz</bar></foo>"
 
     context "with a valid response that the project is building" do
