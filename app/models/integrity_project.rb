@@ -15,7 +15,7 @@ class IntegrityProject < Project
   end
 
   def status_parser(content)
-    IntegrityStatusParser.status(content)
+    IntegrityStatusParser.status(content, self)
   end
   
   private 
