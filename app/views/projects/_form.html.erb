@@ -11,7 +11,9 @@
 <p>
   <b>Project Type</b><br/>
   <%= f.select :type, [[CruiseControlProject.name.titleize, CruiseControlProject.name ],
-                       [HudsonProject.name.titleize, HudsonProject.name ]] %>
+                       [HudsonProject.name.titleize, HudsonProject.name ],  
+                       [IntegrityProject.name.titleize, IntegrityProject.name ]]
+  %>
 </p>
 
 <p>
