@@ -24,13 +24,13 @@ Pulse is a Rails application. To get the code, execute the following:
 
 ### Install gem dependencies
 
-If you don't have geminstaller installed, then execute:
-
-    sudo gem install geminstaller
+If you don't have bundler installed, then execute:
+    sudo gem update --system
+    sudo gem install bundler
 
 Then execute:
 
-    sudo geminstaller
+    bundler install # sudo is optional
 
 ### Set up the database
 
