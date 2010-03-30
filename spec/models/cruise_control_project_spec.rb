@@ -42,4 +42,15 @@ describe Project do
       @project.project_name.should == "BAZ"
     end
   end
+
+  describe "parsers" do
+    it "should be for CC" do
+      xml = 'xml'
+      CruiseControlStatusParser.should_receive(:building).with(xml, @project)
+      CruiseControlStatusParser.should_receive(:status).with(xml)
+      
+      @project.status_parser(xml)
+      @project.building_parser(xml)
+    end
+  end
 end

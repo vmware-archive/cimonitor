@@ -15,17 +15,13 @@ class IntegrityStatusParser < StatusParser
  
     def status(content, project)
       status_parser = self.new
-      begin
-        doc = Nokogiri::XML.parse(content)
-        latest_build = doc.css('#last_build').first
-        status_parser.success = !!(latest_build.attribute('class').value =~ /success/i)
-        build_number = doc.css('#previous_builds li a').first.attribute('href').value.split('/').last
-        status_parser.url = "#{project.feed_url}/builds/#{build_number}"
-        pub_date = Time.parse(latest_build.css('.when').first.attribute('title').value)
-        status_parser.published_at = (pub_date == Time.at(0) ? Clock.now : pub_date).localtime
-      rescue => e
-        #raise e # uncomment to debug, otherwise die silently
-      end
+      doc = Nokogiri::XML.parse(content)
+      latest_build = doc.css('#last_build').first
+      status_parser.success = !!(latest_build.attribute('class').value =~ /success/i)
+      build_number = doc.css('#previous_builds li a').first.attribute('href').value.split('/').last
+      status_parser.url = "#{project.feed_url}/builds/#{build_number}"
+      pub_date = Time.parse(latest_build.css('.when').first.attribute('title').value)
+      status_parser.published_at = (pub_date == Time.at(0) ? Clock.now : pub_date).localtime
       status_parser
     end
   end

@@ -29,15 +29,14 @@ describe IntegrityProject do
     end
   end
 
-  describe "status parsers" do
-    it "should handle bad data" do
-      @project.status_parser('asdfa').should_not be_nil
-      @project.building_parser('asdfas').should_not be_nil
-    end
-    
+  describe "parsers" do
     it "should be for Integrity" do
-      @project.status_parser('whatever').should be_a(IntegrityStatusParser)
-      @project.building_parser('whatever').should be_a(IntegrityStatusParser)
+      html = 'html'
+      IntegrityStatusParser.should_receive(:building).with(html, @project)
+      IntegrityStatusParser.should_receive(:status).with(html, @project)
+
+      @project.status_parser(html)
+      @project.building_parser(html)
     end
   end
 

@@ -31,15 +31,14 @@ describe HudsonProject do
     end
   end
 
-  describe "status parsers" do
-    it "should handle bad xml" do
-      @project.status_parser('asdfa').should_not be_nil
-      @project.building_parser('asdfas').should_not be_nil
-    end
-    
+  describe "parsers" do
     it "should be for Hudson" do
-      @project.status_parser('xml').should be_a(HudsonStatusParser)
-      @project.building_parser('xml').should be_a(HudsonStatusParser)
+      xml = 'xml'
+      HudsonStatusParser.should_receive(:building).with(xml, @project)
+      HudsonStatusParser.should_receive(:status).with(xml)
+      
+      @project.status_parser(xml)
+      @project.building_parser(xml)
     end
   end
 
