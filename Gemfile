@@ -13,6 +13,10 @@ gem "jviney-acts_as_taggable_on_steroids", "1.1"
 gem "mysql"
 gem "libxml-ruby", "1.1.2", :require => 'xml/libxml'
 
+group :development do
+  gem "sqlite3-ruby"
+end
+
 group :test do
   gem "rspec-rails", ">= 1.1.11"
   gem "jasmine", "0.10.3.1"
