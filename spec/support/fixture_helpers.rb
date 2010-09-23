@@ -48,6 +48,12 @@ class TeamcityAtomExample < FixtureFile
   end
 end
 
+class IntegrityHtmlExample < FixtureFile
+  def initialize(filename)
+    super("integrity_html_examples", filename)
+  end
+end
+
 class TeamcityCradiatorXmlExample < FixtureFile
   def initialize(filename)
     super("teamcity_cradiator_xml_examples", filename)
