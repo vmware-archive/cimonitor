@@ -1,0 +1,32 @@
+<%
+   if project.tracker_red?
+     background = 'redbox'
+     status_image = 'exclamation.png'
+   end
+
+   if project.tracker_green?
+     background = 'greenbox'
+     status_image = 'checkmark.png'
+   end
+
+   if project.tracker_blue?
+     background = 'bluebox'
+     status_image = 'questionmark.png'
+   end
+%>
+
+<div class="box <%= background %>">
+  <div class="project_name <%= project.tracker_release_status == Project::TrackerStatus::ON_TRACK ? 'success' : 'error' %>" >
+    <h1> <%= project.name %> </h1>
+  </div>
+
+  <% relative_tracker_status_messages_for(project).each do |css_class, message| %>
+    <div class="<%= css_class %>">
+      <%= message %>
+    </div>
+  <% end %>
+
+  <div class="project_status">
+    <%= image_tag(status_image, {:class => 'status_image'}) %>
+  </div>
+</div>

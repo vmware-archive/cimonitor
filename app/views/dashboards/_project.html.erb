@@ -27,7 +27,7 @@
     <h1><%= link_to(h(project.name), project.url) %></h1>
   </div>
 
-  <% relative_status_messages_for(project).each do |css_class, message| %>
+  <%  relative_status_messages_for(project).each do |css_class, message| %>
       <div class="<%= css_class %>">
         <%= message %>
       </div>

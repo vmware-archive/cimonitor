@@ -14,7 +14,7 @@
   <%= f.select :type, [[CruiseControlProject.name.titleize, CruiseControlProject.name],
                        [HudsonProject.name.titleize, HudsonProject.name],
                        [TeamCityRestProject.name.titleize, TeamCityRestProject.name],
-                       [TeamCityProject.name.titleize, TeamCityProject.name]] %>
+                       [TeamCityProject.name.titleize, TeamCityProject.name]]%>
 </p>
 
 <p>
@@ -57,6 +57,19 @@
         Will poll in <span id='time_left'><%= @project.next_poll_at > Time.now ? "#{@project.next_poll_at.utc.to_i - Time.now.utc.to_i} seconds" : "ASAP"%></span>
     <% end %>
   </em>
+</p>
+
+
+<hr/>
+<h3>Pivotal Tracker Setup</h3>
+
+<p>
+  <%= f.label :tracker_url, 'Tracker URL' %>
+  <%= f.text_area :tracker_url, :style => "height: 3em;" %>
+</p>
+<p>
+  <%= f.label :tracker_api_key, 'Tracker API Key'  %>
+  <%= f.text_field :tracker_api_key %>
 </p>
 
 <hr/>

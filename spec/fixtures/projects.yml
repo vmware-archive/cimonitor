@@ -40,6 +40,8 @@ red_currently_building:
   enabled: true
   building: true
   latest_status_id: 10
+  tracker_url: http://www.pivotaltracker.com/services/v3/projects/458301/iterations/current_backlog
+  tracker_api_key: BS_API_KEY
 green_currently_building:
   name: Green Currently Building
   type: CruiseControlProject
@@ -47,11 +49,15 @@ green_currently_building:
   enabled: true
   building: true
   latest_status_id: 11
+  tracker_url: http://www.pivotaltracker.com/services/v3/projects/69/iterations/current_backlog
+  tracker_api_key: BS_API_KEY2
 never_built:
   name: Never built
   type: CruiseControlProject
   feed_url: http://never-ci:3333/projects/never.rss
   enabled: true
+  tracker_url: http://www.pivotaltracker.com/services/v3/projects/666/iterations/current_backlog
+  tracker_api_key: BS_API_KEY3
 internal_project1:
   name: Aggregated Internal Project 1
   type: CruiseControlProject
