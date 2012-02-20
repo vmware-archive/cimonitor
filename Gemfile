@@ -17,6 +17,7 @@ gem "aws-sdk"
 gem 'delayed_job_active_record'
 gem "daemons"
 gem 'jquery-rails', '>= 1.0.12'
+gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
 
 
 group :postgres do
@@ -42,7 +43,6 @@ group :development do
   gem "soloist"
   gem "rvm"
   gem "fog"
-  gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
 end
 
 group :test do
