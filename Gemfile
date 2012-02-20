@@ -45,7 +45,7 @@ group :development do
 end
 
 group :test do
-  gem "jasmine", "1.0.1.1"
+  gem "jasmine"
   gem "headless", "0.1.0"
   gem "timecop"
 end
