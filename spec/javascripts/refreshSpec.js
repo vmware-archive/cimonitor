@@ -116,10 +116,10 @@ describe('refresh', function() {
   it("should call $.get for the project", function() {
          refresh();
     expect(spyOnGet).toHaveBeenCalled();
-    expect(spyOnGet.argsForCall[0][0]).toBe("projects/1/load_project_with_status");
-    expect(spyOnGet.argsForCall[1][0]).toBe("messages/1/load_message");
-    expect(spyOnGet.argsForCall[2][0]).toBe("aggregate_projects/1/load_aggregate_project_with_status");
-    expect(spyOnGet.argsForCall[3][0]).toBe("twitter_searches/1/load_tweet");
+    expect(spyOnGet.argsForCall[0][0]).toBe("/projects/1/load_project_with_status");
+    expect(spyOnGet.argsForCall[1][0]).toBe("/messages/1/load_message");
+    expect(spyOnGet.argsForCall[2][0]).toBe("/aggregate_projects/1/load_aggregate_project_with_status");
+    expect(spyOnGet.argsForCall[3][0]).toBe("/twitter_searches/1/load_tweet");
     expect(window.scheduleRefresh).toHaveBeenCalled();
   });
 
