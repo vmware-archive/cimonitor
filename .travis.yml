@@ -1,1 +1,3 @@
-script: "./ci_build.sh" 
+before_script:
+  - "sh -e /etc/init.d/xvfb start"
+script: "DISPLAY=:99 ./ci_build.sh" 
