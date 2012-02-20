@@ -42,10 +42,10 @@ group :development do
   gem "soloist"
   gem "rvm"
   gem "fog"
+  gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
 end
 
 group :test do
-  gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
   gem "headless", "0.1.0"
   gem "timecop"
 end

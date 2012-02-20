@@ -1,20 +1,7 @@
-#!/usr/bin/env bash
-
-source $HOME/.rvm/scripts/rvm && source .rvmrc
-
-# install bundler if necessary
-gem list --local bundler | grep bundler || gem install bundler || exit 1
-
-# debugging info
-echo USER=$USER && ruby --version && which ruby && which bundle
-
-# conditionally install project gems from Gemfile
-bundle check || bundle install --without postgres || exit 1
-
-bundle exec rake setup
 cp config/database.yml.travis config/database.yml
+cp config/auth.yml.example config/auth.yml
 
-RAILS_ENV=test bundle exec rake db:create || true
-RAILS_ENV=development bundle exec rake db:create || true
+sh -e /etc/init.d/xvfb start
+export DISPLAY=:99
 
-bundle exec rake jasmine:ci
+bundle exec rake db:create db:migrate db:test:prepare spec jasmine:ci
