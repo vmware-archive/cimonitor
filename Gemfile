@@ -45,7 +45,7 @@ group :development do
 end
 
 group :test do
-  gem "jasmine"
+  gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
   gem "headless", "0.1.0"
   gem "timecop"
 end
