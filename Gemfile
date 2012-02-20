@@ -38,11 +38,6 @@ group :development do
   gem 'ruby-debug-base19', :platforms => :mri_19
   gem 'ruby-debug-base', :platforms => :mri_18
   gem "ruby-debug-ide"
-  gem "capistrano"
-  gem "capistrano-ext"
-  gem "soloist"
-  gem "rvm"
-  gem "fog"
 end
 
 group :test do
