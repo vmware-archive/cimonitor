@@ -17,7 +17,6 @@ gem "aws-sdk"
 gem 'delayed_job_active_record'
 gem "daemons"
 gem 'jquery-rails', '>= 1.0.12'
-gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
 
 
 group :postgres do
@@ -38,6 +37,7 @@ group :development do
   gem 'ruby-debug-base19', :platforms => :mri_19
   gem 'ruby-debug-base', :platforms => :mri_18
   gem "ruby-debug-ide"
+  gem "jasmine", :git => "https://github.com/pivotal/jasmine-gem.git"
 end
 
 group :test do
