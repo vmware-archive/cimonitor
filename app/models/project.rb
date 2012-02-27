@@ -15,6 +15,8 @@ class Project < ActiveRecord::Base
   validates_presence_of :feed_url
   validate :ec2_presence
 
+  validates_presence_of :tracker_token, :tracker_id, :if => :tracker_enabled?
+
   def before_save
     if changed.include?('polling_interval')
       set_next_poll

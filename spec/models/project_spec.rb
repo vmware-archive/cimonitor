@@ -39,6 +39,15 @@ describe Project do
       @project.ec2_tuesday = true
       @project.should be_valid
     end
+
+    it "should require all tracker fields if tracker is enabled" do
+      @project.tracker_enabled = true
+      @project.should_not be_valid
+      @project.tracker_token = "abc123"
+      @project.should_not be_valid
+      @project.tracker_id = 123
+      @project.should be_valid
+    end
   end
 
   describe 'scopes' do
