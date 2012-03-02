@@ -142,22 +142,22 @@ describe DashboardsController do
 
     it "should display a checkmark for green projects not building" do
       get :show
-      not_building_projects = Project.standalone.reject(&:building?)
+      not_building_projects = Project.standalone.reject(&:building?).select(&:green?)
       not_building_projects.should_not be_empty
       not_building_projects.each do |project|
         response.should have_tag("div.box[project_id='#{project.id}']") do |box|
-          box.should have_tag("img", :src => "checkmark.png")
+          box.should have_tag("div.green")
         end
       end
     end
 
     it "should display an exclamation for red projects not building" do
       get :show
-      not_building_projects = Project.standalone.reject(&:building?)
+      not_building_projects = Project.standalone.reject(&:building?).select(&:red?)
       not_building_projects.should_not be_empty
       not_building_projects.each do |project|
         response.should have_tag("div.box[project_id='#{project.id}']") do |box|
-          box.should have_tag("img", :src => "exclamation.png")
+          box.should have_tag("div.red")
         end
       end
     end
