@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Project do
+  URL = "www.pivotaltracker.com/services/v3/projects/458301/iterations/current_backlog"
+  TEST_TOKEN = 'test token'
   class RandomProject < Project;
   end
 
@@ -38,6 +40,56 @@ describe Project do
       @project.should_not be_valid
       @project.ec2_tuesday = true
       @project.should be_valid
+    end
+
+    describe "Tracker URL attribute" do
+      context "if tracker_api_key is blank" do
+        it "is allowed to be blank" do
+          @project.tracker_api_key = '';
+          @project.tracker_url = '';
+          @project.should be_valid
+        end
+      end
+      context "if tracker_api_key is not blank" do
+        before do
+          @project.tracker_api_key = TEST_TOKEN
+          @project.tracker_url = 'http://' + URL
+        end
+        it "is not allowed to be blank" do
+          @project.should be_valid
+          @project.tracker_url = '';
+          @project.should_not be_valid
+        end
+
+        it "should conform to Pivotal Tracker API url format" do
+          @project.should have(0).errors_on(:tracker_url)
+          @project.tracker_url = "http://foo.bar.com:3434/wrong/example_project/rssAll"
+          @project.should have(1).errors_on(:tracker_url)
+        end
+
+        it "should allow both http and https" do
+          @project.tracker_url = "https://" + URL
+          @project.should have(0).errors_on(:tracker_url)
+        end
+      end
+    end
+    describe "Tracker API key" do
+      context 'if the tracker_url is blank' do
+        it 'is allowed to be blank' do
+          @project.tracker_url = ''
+          @project.tracker_api_key = ''
+          @project.should be_valid
+        end
+      end
+      context 'if the tracker_url is not blank' do
+        it 'is not allowed to be blank' do
+          @project.tracker_api_key = TEST_TOKEN
+          @project.tracker_url = 'http://' + URL
+          @project.should be_valid
+          @project.tracker_api_key = ''
+          @project.should_not be_valid
+        end
+      end
     end
   end
 
@@ -148,6 +200,38 @@ describe Project do
     end
   end
 
+  describe "tracker release status methods" do
+    let(:project) { projects(:pivots) }
+
+    describe "#tracker_red?" do
+      it "should be true if the tracker_status is delayed" do
+        project.stub(:tracker_release_status).and_return(Project::TrackerStatus::DELAYED)
+        project.tracker_red?.should == true
+      end
+    end
+
+    describe "#tracker_green?" do
+      it "should be true if the tracker_release_status is ON_TRACK" do
+        project.stub(:tracker_release_status).and_return(Project::TrackerStatus::ON_TRACK)
+        project.tracker_green?.should == true
+      end
+      it "should be true if the tracker_release_status is NO_RELEASE" do
+        project.stub(:tracker_release_status).and_return(Project::TrackerStatus::NO_RELEASE)
+        project.tracker_green?.should == true
+      end
+    end
+
+    describe "#tracker_blue?" do
+      it "should be true if the tracker_release_status is OFFLINE" do
+        project.stub(:tracker_release_status).and_return(Project::TrackerStatus::OFFLINE)
+        project.tracker_blue?.should == true
+      end
+      it "should be true if the tracker_release_status is nil" do
+        project.stub(:tracker_release_status).and_return(nil)
+        project.tracker_blue?.should == true
+      end
+    end
+  end
   describe "#red_since" do
     it "should return #published_at for the red status after the most recent green status" do
       project = projects(:socialitis)
@@ -365,6 +449,60 @@ describe Project do
       status_id = project.statuses.first.id
       project.destroy
       proc { ProjectStatus.find(status_id)}.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe "#parse_tracker_status" do
+    def example(name)
+      PivotalTrackerExample.new(name).read
+    end
+
+    it "should ignore finished release stories" do
+      @project.parse_tracker_status(example("sample.xml"))
+      @project.tracker_release_status.should == Project::TrackerStatus::ON_TRACK
+      @project.tracker_release_deadline.should_not == Time.parse("2012/02/14 12:00:00 SGT")
+    end
+
+    context "when first unaccepted release deadline is before iteration start date" do
+      it "should set release status to 'delayed'" do
+        @project.parse_tracker_status(example("failure.xml"))
+        @project.tracker_release_status.should == Project::TrackerStatus::DELAYED
+        @project.tracker_release_deadline.should == Time.parse("2012/02/16 12:00:00 UTC")
+      end
+    end
+    context "when first unaccepted release deadline is after iteration start date" do
+      context "when there is one release deadline in current+backlog" do
+        it "should set release status to 'on track'" do
+          @project.parse_tracker_status(example("success.xml"))
+          @project.tracker_release_status.should == Project::TrackerStatus::ON_TRACK
+          @project.tracker_release_deadline.should == Time.parse("2012/02/15 04:00:00 UTC")
+        end
+      end
+      context "when there are multiple release deadlines (accepted/unaccepted) in current+backlog" do
+        it "should set release status to 'on track'" do
+          @project.parse_tracker_status(example("sample.xml"))
+          @project.tracker_release_status.should == Project::TrackerStatus::ON_TRACK
+          @project.tracker_release_deadline.should == Time.parse("2012/02/15 12:00:00 SGT")
+        end
+      end
+    end
+
+  end
+
+  describe "#tracker_auth_header" do
+    it "should return an X-TrackerToken header" do
+      @project.tracker_api_key = TEST_TOKEN
+      @project.tracker_auth_header.should == {'X-TrackerToken' => TEST_TOKEN}
+    end
+  end
+
+  describe "#has_tracker?" do
+    it "should return true if tracker_url is present" do
+      @project.has_tracker?.should == false
+      @project.tracker_url = "http://" + URL
+      @project.tracker_api_key = TEST_TOKEN
+      @project.save!
+      @project.reload.has_tracker?.should == true
     end
   end
 end

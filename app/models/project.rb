@@ -1,4 +1,11 @@
 class Project < ActiveRecord::Base
+  class TrackerStatus
+    ON_TRACK = 'on track'
+    DELAYED = 'delayed'
+    OFFLINE = 'offline'
+    NO_RELEASE = 'no release'
+  end
+
   RECENT_STATUS_COUNT = 10
   DEFAULT_POLLING_INTERVAL = 120
 
@@ -8,6 +15,13 @@ class Project < ActiveRecord::Base
 
   scope :standalone, where(:enabled => true, :aggregate_project_id => nil)
   scope :enabled, where(:enabled => true)
+
+  validates_presence_of :tracker_url, :unless => Proc.new { |p| p.tracker_api_key.blank? }
+  validates_presence_of :tracker_api_key, :unless => Proc.new { |p| p.tracker_url.blank? }
+  validates_format_of :tracker_url,
+                      :allow_blank => true,
+                      :with =>  /https?:\/\/www\.pivotaltracker\.com\/services\/v3\/projects\/\d+\/iterations\/current_backlog$/,
+                      :message => "should look like: https://www.pivotaltracker.com/services/v3/projects/:project_id/iterations/current_backlog"
 
   acts_as_taggable
 
@@ -56,6 +70,24 @@ class Project < ActiveRecord::Base
     end.join
   end
 
+  def has_tracker?
+    self.tracker_url.present?
+  end
+
+  def tracker_red?
+    self.tracker_release_status == Project::TrackerStatus::DELAYED
+  end
+
+  def tracker_green?
+    self.tracker_release_status == Project::TrackerStatus::ON_TRACK ||
+        self.tracker_release_status == Project::TrackerStatus::NO_RELEASE
+  end
+
+  def tracker_blue?
+    self.tracker_release_status == Project::TrackerStatus::OFFLINE ||
+        self.tracker_release_status == nil
+  end
+
   def project_name
     feed_url.blank? ? nil : feed_url
   end
@@ -87,6 +119,24 @@ class Project < ActiveRecord::Base
 
   def parse_building_status(content)
     BuildingStatus.new(false)
+  end
+
+  def parse_tracker_status(content)
+    self.tracker_release_status = TrackerStatus::NO_RELEASE
+    xml = Hash.from_xml content
+    xml['iterations'].each do |it|
+      it['stories'].each do |story|
+        if story['story_type'] == 'release' and story['deadline'] and story['current_state'] != 'accepted'
+          self.tracker_release_deadline = story['deadline']
+          self.tracker_release_status = story["deadline"] >= it['start'] ? TrackerStatus::ON_TRACK : TrackerStatus::DELAYED
+          return
+        end
+      end
+    end
+  end
+
+  def tracker_auth_header
+    {'X-TrackerToken' => self.tracker_api_key}
   end
 
   def url

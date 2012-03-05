@@ -75,3 +75,14 @@ class TeamcityRESTExample < FixtureFile
     as_xml.at_css(selector)
   end
 end
+
+class PivotalTrackerExample < FixtureFile
+  def initialize(filename)
+    super("pivotal_tracker_examples", filename)
+  end
+
+  def retrieve_content_at(*args)
+    read
+  end
+
+end

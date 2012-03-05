@@ -44,7 +44,6 @@ describe StatusFetcher do
     end
   end
 
-
   before(:each) do
     @project = projects(:socialitis)
   end
@@ -190,6 +189,50 @@ describe StatusFetcher do
     end
   end
 
+  describe "#fetch_tracker_status" do
+    before(:all) do
+      Timecop.freeze(Time.now)
+    end
+    after(:all) do
+      Timecop.return
+    end
+    context "with a valid response" do
+      before(:each) do
+        @response_xml = PivotalTrackerExample.new("success.xml").read
+        fetch_tracker_status_with_xml_response(@response_xml)
+      end
+
+      it "should set the project tracker status to 'on track'" do
+        @project.tracker_updated_at.should == Time.now
+        @project.tracker_release_status.should == Project::TrackerStatus::ON_TRACK
+      end
+    end
+
+    context "with an invalid response" do
+      before(:each) do
+        @response_xml = "<foo><bar>baz</bar></foo>"
+        fetch_tracker_status_with_xml_response(@response_xml)
+      end
+
+      it "should set the tracker status to offline" do
+        @project.tracker_updated_at.should == Time.now
+        @project.tracker_release_status.should == Project::TrackerStatus::OFFLINE
+      end
+    end
+
+    context "with a http error status" do
+      before(:each) do
+        @response_xml = "404 Not Found"
+        fetch_tracker_status_with_xml_response(@response_xml)
+      end
+
+      it "should set the tracker status to offline" do
+        @project.tracker_updated_at.should == Time.now
+        @project.tracker_release_status.should == Project::TrackerStatus::OFFLINE
+      end
+    end
+  end
+
   describe "#fetch_all" do
     context "with exception while parsing all xml" do
       before(:each) do
@@ -208,6 +251,7 @@ describe StatusFetcher do
 
         @fetcher.should_receive(:retrieve_status_for).exactly(project_count - 1).times.and_return(ProjectStatus.new(:success => true))
         @fetcher.should_receive(:retrieve_building_status_for).exactly(project_count - 1).times.and_return(BuildingStatus.new(false))
+        @fetcher.should_receive(:retrieve_tracker_status_for).exactly(update_later.has_tracker? ? 2 : 3).times
         @fetcher.should_not_receive(:retrieve_status_for).with(update_later)
 
         @fetcher.fetch_all
@@ -228,6 +272,12 @@ describe StatusFetcher do
 
   def fetch_building_status_with_xml_response(xml)
     fetcher_with_mocked_url_retriever(@project.build_status_url, xml).retrieve_building_status_for(@project)
+    status = Delayed::Worker.new.work_off(1)
+    @project.reload
+  end
+
+  def fetch_tracker_status_with_xml_response(xml)
+    fetcher_with_mocked_url_retriever(@project.tracker_url, xml).retrieve_tracker_status_for(@project)
     status = Delayed::Worker.new.work_off(1)
     @project.reload
   end

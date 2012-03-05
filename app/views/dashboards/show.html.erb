@@ -15,6 +15,11 @@
     <div class="project<%= project.is_a?(AggregateProject) ? ' aggregate' : ''%>">
       <%= render :partial => 'dashboards/project', :locals => {:project => project} %>
     </div>
+    <% if project.respond_to?(:has_tracker?) and project.has_tracker? %>
+      <div class="project">
+        <%= render :partial => 'dashboards/project_tracker', :locals => {:project => project} %>
+      </div>
+    <% end %>
   <% end %>
 
   <% for message in @messages -%>

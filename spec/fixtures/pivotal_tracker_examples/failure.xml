@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iterations type="array">
+  <iteration>
+    <id type="integer">3</id>
+    <number type="integer">3</number>
+    <start type="datetime">2012/02/12 16:00:00 UTC</start>
+    <finish type="datetime">2012/02/19 16:00:00 UTC</finish>
+    <team_strength type="float">1.0</team_strength>
+    <stories type="array">
+      <story>
+        <id type="integer">24547499</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24547499</url>
+        <estimate type="integer">1</estimate>
+        <current_state>accepted</current_state>
+        <description>- optional: more space between slider and bottom of graph
+- play with themes; would be nice to have a better active state color than gray
+- when dragging, slider handle gets selected and unselected and is the jank</description>
+        <name>Fancy slider UI upgrades</name>
+        <requested_by>Tomasz Maszkowski</requested_by>
+        <created_at type="datetime">2012/02/07 03:15:26 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:29:18 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:29:18 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">24546745</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24546745</url>
+        <estimate type="integer">2</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Clicking off the date picker anywhere (including on a chart) should dismiss it</name>
+        <requested_by>Mike Grafton</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/07 02:39:26 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:43:44 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:43:43 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">23716363</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/23716363</url>
+        <estimate type="integer">1</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Better labeling for graph points (the 5/37 problem)</name>
+        <requested_by>Mike Grafton</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/01/20 06:14:06 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:44:06 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:44:06 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">24679835</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24679835</url>
+        <estimate type="integer">2</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Display features/bugs/chores on the same charts instead of duplicate charts for every story type </name>
+        <requested_by>Tomasz Maszkowski</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/09 03:02:52 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:46:42 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:46:42 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">23716591</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/23716591</url>
+        <estimate type="integer">2</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Filters that allow picking bugs/features/chores instead of duplicate graphs</name>
+        <requested_by>Mike Grafton</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/01/20 06:18:29 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:46:57 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:46:57 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">24271901</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24271901</url>
+        <estimate type="integer">1</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Add log out button</name>
+        <requested_by>Diego Garcia</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/01 03:27:23 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:47:14 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:47:13 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">23931235</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/23931235</url>
+        <estimate type="integer">1</estimate>
+        <current_state>accepted</current_state>
+        <description></description>
+        <name>Root should redirect to dashboard if session is active</name>
+        <requested_by>Diego Garcia</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/01/25 07:56:53 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 02:48:13 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 02:48:13 UTC</accepted_at>
+      </story>
+      <story>
+        <id type="integer">23716539</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/23716539</url>
+        <estimate type="integer">2</estimate>
+        <current_state>accepted</current_state>
+        <description>Longer descriptive text should be available somewhere (mouseover, etc.). Examples too, perhaps?</description>
+        <name>Better explanations for charts</name>
+        <requested_by>Mike Grafton</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/01/20 06:15:59 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 08:44:46 UTC</updated_at>
+        <accepted_at type="datetime">2012/02/13 04:00:00 UTC</accepted_at>
+        <notes type="array">
+          <note>
+            <id type="integer">18541545</id>
+            <text>- Change sentence from &quot;Shows amount of days between story discovery to its acceptance by iteration.&quot; to &quot;Shows number of days between when stories are discovered to when they are finally accepted.&quot;</text>
+            <author>Mike Grafton</author>
+            <noted_at type="datetime">2012/02/13 02:28:10 UTC</noted_at>
+          </note>
+        </notes>
+      </story>
+      <story>
+        <id type="integer">24547933</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24547933</url>
+        <estimate type="integer">1</estimate>
+        <current_state>delivered</current_state>
+        <description></description>
+        <name>End date of allowable range should be the max of last story created date and last story accepted date</name>
+        <requested_by>Tomasz Maszkowski</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/07 03:37:18 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 07:28:48 UTC</updated_at>
+        <notes type="array">
+          <note>
+            <id type="integer">18541695</id>
+            <text>check on BBH Hachi case - why does iteration 10 show up when</text>
+            <author>Mike Grafton</author>
+            <noted_at type="datetime">2012/02/13 02:37:37 UTC</noted_at>
+          </note>
+          <note>
+            <id type="integer">18541815</id>
+            <text>slider seems to have a different range than the graph above it, causes a few different problems;
+
+also sliding to the very end causes some problems (possibly related)
+
+finally, hachi iteration 10 does not appear to have anything and maybe should not be showing up.</text>
+            <author>Mike Grafton</author>
+            <noted_at type="datetime">2012/02/13 02:43:02 UTC</noted_at>
+          </note>
+          <note>
+            <id type="integer">18659753</id>
+            <text>test reject</text>
+            <author>Tomasz Maszkowski</author>
+            <noted_at type="datetime">2012/02/15 06:42:42 UTC</noted_at>
+          </note>
+        </notes>
+      </story>
+      <story>
+        <id type="integer">24827323</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>bug</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24827323</url>
+        <current_state>delivered</current_state>
+        <description></description>
+        <name>Dragging to the end of the slider should not break the graphs</name>
+        <requested_by>Mike Grafton</requested_by>
+        <created_at type="datetime">2012/02/13 02:37:33 UTC</created_at>
+        <updated_at type="datetime">2012/02/14 05:33:09 UTC</updated_at>
+        <notes type="array">
+        </notes>
+        <attachments type="array">
+          <attachment>
+            <id type="integer">4826171</id>
+            <filename>Screen_Shot_2012-02-13_at_10.36.54_AM.png</filename>
+            <description></description>
+            <uploaded_by>Mike Grafton</uploaded_by>
+            <uploaded_at type="datetime">2012/02/13 02:37:31 UTC</uploaded_at>
+            <url>https://www.pivotaltracker.com/resource/download/4826171</url>
+          </attachment>
+        </attachments>
+      </story>
+      <story>
+        <id type="integer">24832445</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>bug</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24832445</url>
+        <current_state>delivered</current_state>
+        <description>- set both slider scrubbers to either min or max of the slider and hit &quot;Refresh Charts&quot; button. They are in different positions when the page is loaded.  </description>
+        <name>Iteration range slider should render correctly when min and max values are set to min or max of the range</name>
+        <requested_by>Mohan Krishnan</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/13 06:41:45 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 06:41:44 UTC</updated_at>
+      </story>
+      <story>
+        <id type="integer">24827167</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24827167</url>
+        <estimate type="integer">0</estimate>
+        <current_state>delivered</current_state>
+        <description></description>
+        <name>X-axis should not have labels for fractional iterations</name>
+        <requested_by>Mike Grafton</requested_by>
+        <owned_by>Tomasz Maszkowski</owned_by>
+        <created_at type="datetime">2012/02/13 02:28:30 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 06:42:29 UTC</updated_at>
+        <notes type="array">
+          <note>
+            <id type="integer">18659745</id>
+            <text>test reject</text>
+            <author>Tomasz Maszkowski</author>
+            <noted_at type="datetime">2012/02/15 06:42:15 UTC</noted_at>
+          </note>
+        </notes>
+      </story>
+    </stories>
+  </iteration>
+  <iteration>
+    <id type="integer">4</id>
+    <number type="integer">4</number>
+    <start type="datetime">2012/02/19 16:00:00 UTC</start>
+    <finish type="datetime">2012/02/26 16:00:00 UTC</finish>
+    <team_strength type="float">1</team_strength>
+    <stories type="array">
+    </stories>
+  </iteration>
+  <iteration>
+    <id type="integer">5</id>
+    <number type="integer">5</number>
+    <start type="datetime">2012/02/26 16:00:00 UTC</start>
+    <finish type="datetime">2012/03/04 16:00:00 UTC</finish>
+    <team_strength type="float">1</team_strength>
+    <stories type="array">
+      <story>
+        <id type="integer">24827789</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24827789</url>
+        <estimate type="integer">8</estimate>
+        <current_state>unstarted</current_state>
+        <description></description>
+        <name>Trackerstats should cache project page</name>
+        <requested_by>Mike Grafton</requested_by>
+        <created_at type="datetime">2012/02/13 03:02:17 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 07:10:29 UTC</updated_at>
+      </story>
+      <story>
+        <id type="integer">24968931</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>release</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24968931</url>
+        <current_state>unstarted</current_state>
+        <description></description>
+        <name>test release2</name>
+        <requested_by>Tomasz Maszkowski</requested_by>
+        <created_at type="datetime">2012/02/15 07:04:54 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 07:45:19 UTC</updated_at>
+        <deadline type="datetime">2012/02/16 12:00:00 UTC</deadline>
+      </story>
+    </stories>
+  </iteration>
+  <iteration>
+    <id type="integer">6</id>
+    <number type="integer">6</number>
+    <start type="datetime">2012/03/04 16:00:00 UTC</start>
+    <finish type="datetime">2012/03/11 16:00:00 UTC</finish>
+    <team_strength type="float">1</team_strength>
+    <stories type="array">
+    </stories>
+  </iteration>
+  <iteration>
+    <id type="integer">7</id>
+    <number type="integer">7</number>
+    <start type="datetime">2012/03/11 16:00:00 UTC</start>
+    <finish type="datetime">2012/03/18 16:00:00 UTC</finish>
+    <team_strength type="float">1</team_strength>
+    <stories type="array">
+      <story>
+        <id type="integer">24827801</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>feature</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24827801</url>
+        <estimate type="integer">8</estimate>
+        <current_state>unstarted</current_state>
+        <description></description>
+        <name>Charts page should cache tracker API data</name>
+        <requested_by>Mike Grafton</requested_by>
+        <created_at type="datetime">2012/02/13 03:03:03 UTC</created_at>
+        <updated_at type="datetime">2012/02/15 07:10:16 UTC</updated_at>
+      </story>
+      <story>
+        <id type="integer">24282163</id>
+        <project_id type="integer">458301</project_id>
+        <story_type>chore</story_type>
+        <url>https://www.pivotaltracker.com/story/show/24282163</url>
+        <current_state>unstarted</current_state>
+        <description></description>
+        <name>Upgrade to Rails 3.2</name>
+        <requested_by>Tomasz Maszkowski</requested_by>
+        <created_at type="datetime">2012/02/01 10:21:52 UTC</created_at>
+        <updated_at type="datetime">2012/02/13 01:45:11 UTC</updated_at>
+      </story>
+    </stories>
+  </iteration>
+</iterations>

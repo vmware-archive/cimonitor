@@ -4,7 +4,7 @@ require 'time'
 describe ProjectsController do
   render_views
   
-  describe "with no logged in user" do
+  context "with no logged in user" do
     describe "all actions" do
       it "should redirect to the login page" do
         get :index
@@ -21,7 +21,7 @@ describe ProjectsController do
     end
   end
 
-  describe "with a logged in user" do
+  context "with a logged in user" do
     before(:each) do
       log_in(users(:valid_edward))
     end
@@ -37,7 +37,7 @@ describe ProjectsController do
       get :new
       response.should be_success
     end
-    
+
     it "should show you the time when you are creating a new project" do
       Clock.now = Time.parse("Wed Oct 26 17:02:10 -0700 2011")
       get :new
@@ -56,7 +56,7 @@ describe ProjectsController do
       response.should be_success
     end
 
-    context "#update" do
+    describe "#update" do
       it "should respond to update" do
         put :update, :id => projects(:socialitis), :project => { }
         response.should redirect_to(projects_path)

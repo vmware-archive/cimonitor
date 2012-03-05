@@ -2,7 +2,8 @@ require 'net/http'
 require 'net/https'
 
 class UrlRetriever
-  def retrieve_content_at(url, username = nil, password = nil)
+  def retrieve_content_at(url, username = nil, password = nil, headers = nil)
+    @headers = headers
     if username.present? && password.present?
       response = do_get(url) { |get| get.basic_auth(username, password) }
       if response['www-authenticate'].present?
@@ -28,6 +29,8 @@ class UrlRetriever
   def do_get(url)
     uri = URI.parse(url)
     get = Net::HTTP::Get.new("#{uri.path}?#{uri.query}")
+
+    @headers.each {|k, v| get[k] = v } if @headers
 
     yield(get) if block_given?
 

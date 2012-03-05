@@ -9,6 +9,7 @@ class StatusFetcher
     projects.each do |project|
       retrieve_status_for(project)
       retrieve_building_status_for(project)
+      retrieve_tracker_status_for(project) if project.has_tracker?
       project.set_next_poll!
     end
     0
@@ -21,6 +22,7 @@ class StatusFetcher
       status = project.parse_project_status(content)
       status.online = true
     end
+
     project.statuses.build(status.attributes).save unless project.status.match?(status)
   end
   handle_asynchronously :retrieve_status_for, :queue => 'project_status'
@@ -34,6 +36,19 @@ class StatusFetcher
     project.update_attribute(:building, status.building?)
   end
   handle_asynchronously :retrieve_building_status_for, :queue => 'build_status'
+
+  def retrieve_tracker_status_for(project)
+    project.tracker_updated_at = Time.now
+
+    error = http_errors_for(project) do
+      content = @url_retriever.retrieve_content_at(project.tracker_url , nil, nil,  project.tracker_auth_header)
+      project.parse_tracker_status(content)
+    end
+
+    project.tracker_release_status = Project::TrackerStatus::OFFLINE if error
+    project.save!
+  end
+  handle_asynchronously :retrieve_tracker_status_for, :queue => 'tracker_status'
 
   private
 
