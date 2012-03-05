@@ -10,7 +10,7 @@ describe 'dashboards/_project_tracker.html.erb' do
 
   it "should display the project name" do
     render :partial => "dashboards/project_tracker", :locals => {:project => @project }
-    page.should have_content('Red Currently Building')
+    page.should have_content('Red Currently Building - Tracker')
   end
 
   context 'is on track' do
