@@ -57,7 +57,7 @@ describe StatusFetcher do
 
       let!(:old_status_count) { @project.statuses.count }
       before(:each) do
-        Timecop.freeze
+        Timecop.freeze(Time.now)
         fetch_build_history_with_xml_response(@response_xml)
       end
 
