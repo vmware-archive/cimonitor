@@ -1,7 +1,7 @@
 source :rubygems
 gem "bundler"
 
-gem "rails", "3.1.3"
+gem "rails", "3.2.0"
 gem "rake"
 gem "gem_plugin"
 gem "mime-types"
@@ -25,7 +25,7 @@ group :postgres do
 end
 
 group :mysql do
-  gem 'mysql2', '< 0.3'
+  gem 'mysql2', '~> 0.3.0'
 end
 
 group :thin do
@@ -33,8 +33,8 @@ group :thin do
 end
 
 group :assets do
-  gem 'sass-rails'
-  gem 'uglifier'
+  gem 'sass-rails',"  ~> 3.2.3"
+  gem 'uglifier', '>=1.0.3'
 end
 
 group :development do

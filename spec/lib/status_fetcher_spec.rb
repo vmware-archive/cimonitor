@@ -44,7 +44,6 @@ describe StatusFetcher do
     end
   end
 
-
   before(:each) do
     @project = projects(:socialitis)
   end
