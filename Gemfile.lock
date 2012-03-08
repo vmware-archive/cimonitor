@@ -42,6 +42,8 @@ GEM
       json (~> 1.4)
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
+    bourbon (1.4.0)
+      sass (>= 3.1)
     builder (3.0.0)
     bunny (0.7.9)
     capistrano (2.11.2)
@@ -116,6 +118,8 @@ GEM
       multi_json
       multi_xml
     httpauth (0.1)
+    httpi (0.9.6)
+      rack
     i18n (0.6.0)
     jasmine (1.1.2)
       jasmine-core (>= 1.1.0)
@@ -266,6 +270,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_taggable_on_steroids!
   aws-sdk
+  bourbon
   bundler
   capistrano
   capistrano-ext
@@ -281,6 +286,7 @@ DEPENDENCIES
   headless (= 0.1.0)
   heroku
   httpauth
+  httpi
   jasmine
   jquery-rails
   mime-types

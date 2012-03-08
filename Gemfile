@@ -19,6 +19,8 @@ gem "daemons"
 gem 'jquery-rails'
 gem 'pivotal_git_scripts'
 gem 'foreman'
+gem 'bourbon'
+gem 'httpi'
 
 group :postgres do
   gem "pg"

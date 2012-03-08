@@ -30,4 +30,31 @@ module CiMonitorHelper
     end
     messages
   end
+
+  def simple_time_for(event_time, apply_tense=false)
+    if event_time.nil?
+      return ''
+    end
+    total_seconds = (Time.now - event_time).round.to_i.abs
+    days = total_seconds / 86400
+    hours = (total_seconds / 3600) - (days * 24)
+    minutes = (total_seconds / 60) - (hours * 60) - (days * 1440)
+    seconds = total_seconds % 60
+
+    simple_time = if days > 0
+                    days.to_s+'d'
+                  elsif hours > 0
+                    hours.to_s+'h'
+                  elsif minutes > 0
+                    minutes.to_s+'m'
+                  elsif seconds > 0
+                    seconds.to_s+'s'
+                  end
+    if apply_tense
+      simple_time + ((Time.now - event_time) > 0 ? " late" : " more")
+    else
+      simple_time
+    end
+
+    end
 end

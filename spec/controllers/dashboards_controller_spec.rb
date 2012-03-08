@@ -3,6 +3,10 @@ require 'spec_helper'
 describe DashboardsController do
   render_views
 
+  before :each do
+    controller.extend CiMonitorHelper
+  end
+
   describe "routes" do
     it "should map /dashboard to #show" do
       {:get => "/dashboard"}.should route_to(:controller => 'dashboards', :action => 'show')
@@ -12,7 +16,6 @@ describe DashboardsController do
   describe "#show" do
 
     let(:page) { Capybara::Node::Simple.new(response.body) }
-
 
     it "should succeed" do
       get :show
@@ -138,8 +141,8 @@ describe DashboardsController do
       building_projects.should_not be_empty
 
       building_projects.each do |project|
-        page.find("div.box[project_id='#{project.id}']").tap do |box|
-          box.should have_css(".building.red")
+        page.find("div.box.redbox[project_id='#{project.id}']").tap do |box|
+          box.should have_css(".sparkline.building")
         end
       end
     end
@@ -149,8 +152,8 @@ describe DashboardsController do
       green_building_projects = Project.find(:all, :conditions => {:enabled => true, :building => true}).select(&:green?)
       green_building_projects.should_not be_empty
       green_building_projects.each do |project|
-        page.find("div.box[project_id='#{project.id}']").tap do |box|
-          box.should have_css(".building.green")
+        page.find("div.box.greenbox[project_id='#{project.id}']").tap do |box|
+          box.should have_css(".sparkline.building")
         end
       end
     end
@@ -170,6 +173,26 @@ describe DashboardsController do
       not_building_projects.should_not be_empty
       not_building_projects.each do |project|
         page.should have_css("div[project_id='#{project.id}'].box.redbox")
+      end
+    end
+
+    describe "offline projects" do
+      it "should display a grey tile" do
+        get :show
+        offline_projects = Project.standalone.reject(&:green?).reject(&:red?)
+        offline_projects.should_not be_empty
+        offline_projects.each do |project|
+          page.should have_css("div.greybox.box[project_id='#{project.id}']")
+        end
+      end
+      it "should display the last build time" do
+        get :show
+        offline_projects = Project.standalone.reject(&:green?).reject(&:red?)
+        offline_projects.should_not be_empty
+        offline_projects.each do |project|
+          page.should have_css("div.greybox.box[project_id='#{project.id}'] .project_published_at",
+                               text: controller.simple_time_for(project.last_published_at))
+        end
       end
     end
 
@@ -252,7 +275,7 @@ describe DashboardsController do
           end
         end
 
-        context "when the project is blue" do
+        context "when the project is grey" do
           before do
             @project = @all_projects.reject(&:online?).last
           end

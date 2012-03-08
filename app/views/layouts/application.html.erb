@@ -38,7 +38,7 @@
     <div style="clear:both;"></div>
   </div>
 
-<div class="page">
+<div class="page <%= params[:controller] %> <%= params[:action] %> ">
   <% if flash[:error] %>
     <div id="flash_error">
       <%= flash[:error] %>

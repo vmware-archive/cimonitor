@@ -22,7 +22,7 @@ describe AggregateProjectsController do
 
       it "should show only enabled projects within an aggregate project" do
         ap = aggregate_projects(:internal_projects_aggregate)
-        disabled_project = CruiseControlProject.create!(:enabled => false, :name => "disabled project", :feed_url => "http://never-ci:3333/projects/internal_project1.rss", :aggregate_project_id => ap.id)
+        disabled_project = CruiseControlProject.create!(:enabled => false, code: 'DisP', :name => "disabled project", :feed_url => "http://never-ci:3333/projects/internal_project1.rss", :aggregate_project_id => ap.id)
         ap.projects.should include(disabled_project)
         get :show, :id => ap.to_param
         page.should_not have_css("div.box[project_id='#{disabled_project.id}']")

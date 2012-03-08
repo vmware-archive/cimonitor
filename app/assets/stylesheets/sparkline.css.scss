@@ -1,0 +1,144 @@
+@import "constants.css.scss";
+
+@-webkit-keyframes building-green {
+  0% { background: $sparkline-green; }
+  100% { background: white; }
+}
+
+@-webkit-keyframes building-red {
+  0% { background: $sparkline-red; }
+  100% { background: white; }
+}
+
+@-moz-keyframes building-green {
+  0% { background: $sparkline-green; }
+  100% { background: white; }
+}
+
+@-moz-keyframes building-red {
+  0% { background: $sparkline-red; }
+  100% { background: white; }
+}
+
+@-ms-keyframes building-green {
+  0% { background: $sparkline-green; }
+  100% { background: white; }
+}
+
+@-ms-keyframes building-red {
+  0% { background: $sparkline-red; }
+  100% { background: white; }
+}
+
+.sparkline {
+
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  margin-bottom: 5px;
+  width: 75%;
+
+  .item {
+    display: block;
+    float: left;
+    position: relative;
+    margin: 2px;
+    background: $sparkline-green;
+  }
+
+  .item.success a {
+    background-color: black;
+    display: inline-block;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+  }
+
+  .item.failure a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 1px;
+
+    &:before {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      content: '';
+      width: 100%;
+      height: 100%;
+      border-bottom: 1px solid black;
+      @include transform(rotate(-45deg));
+    }
+
+    &:after {
+      display: inline-block;
+      position: absolute;
+      top: 7px;
+      left: -8px;
+      width: 100%;
+      height: 100%;
+      content: '';
+      border-top: 1px solid black;
+      @include transform(rotate(45deg));
+    }
+  }
+
+  .item.offline {
+    background-color: #5CC8F9;
+    padding-right: 4px;
+    padding-left: 3px;
+  }
+}
+
+.sparkline.building {
+  .item {
+    @include animation-name(building-green);
+    @include animation-duration(2s);
+    @include animation-direction(alternate);
+    @include animation-timing-function(ease);
+    @include animation-iteration-count(infinite);
+    &:nth-child(1) { @include animation-delay(1s); }
+    &:nth-child(2) { @include animation-delay(2s); }
+    &:nth-child(3) { @include animation-delay(3s); }
+    &:nth-child(4) { @include animation-delay(4s); }
+    &:nth-child(5) { @include animation-delay(5s); }
+    &:nth-child(6) { @include animation-delay(6s); }
+    &:nth-child(7) { @include animation-delay(7s); }
+    &:nth-child(8) { @include animation-delay(8s); }
+    &:nth-child(9) { @include animation-delay(9s); }
+    &:nth-child(10) { @include animation-delay(10s); }
+  }
+
+  .item.success a {
+    background-color: transparent;
+  }
+
+  .item.failure a {
+    background-colour: transparent;
+
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.greenbox .sparkline.building {
+  .item {
+    @include animation-name(building-green);
+  }
+}
+
+.redbox .sparkline.building {
+  .item {
+    @include animation-name(building-red);
+  }
+}
+
+
+

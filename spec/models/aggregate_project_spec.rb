@@ -9,6 +9,22 @@ describe AggregateProject do
     it "should be valid" do
       @ap.should be_valid
     end
+    
+    describe "code" do
+      it "should be present" do
+        @ap.code = ""
+        @ap.should_not be_valid
+        @ap.errors[:code].should be_present
+      end
+      it "should not be longer than 4 characters" do
+        @ap.code = "FOUR"
+        @ap.should be_valid
+        @ap.code = "FIVER"
+        @ap.should_not be_valid
+        @ap.errors[:code].should be_present
+      end
+    end
+    
   end
 
   describe 'associations' do
@@ -84,11 +100,11 @@ describe AggregateProject do
     end
   end
 
-  describe '#status' do
+  describe '#latest_status' do
     it "should return the last status of all the projects" do
       @ap.projects << projects(:pivots)
       @ap.projects << projects(:socialitis)
-      @ap.status.should == projects(:socialitis).status
+      @ap.latest_status.should == projects(:socialitis).latest_status
     end
   end
 
@@ -108,6 +124,67 @@ describe AggregateProject do
       @ap.projects << projects(:socialitis)
       @ap.recent_online_statuses.should include project_statuses(:pivots_status)
       @ap.recent_online_statuses.should include project_statuses(:socialitis_status_green_01)
+    end
+  end
+
+  describe "#statuses" do
+    it "return all latest_status of projects sorted by id, even if one of the project has no statuses" do
+      @ap.projects << projects(:socialitis)
+      @ap.projects << projects(:pivots)
+      @ap.projects << projects(:offline)
+      @ap.projects << Project.create(code: 'NS', name: 'No status',
+                                    type: 'CruiseControlProject',
+                                    feed_url: 'http://ci.pivotallabs.com:3333/projects/pivots.rss',
+                                    enabled: true)
+      @ap.reload.statuses.should == [projects(:pivots).latest_status,
+                              projects(:socialitis).latest_status,
+                              projects(:offline).latest_status,]
+    end
+  end
+
+  describe '#last_published_at' do
+    before do
+      @ap.projects << projects(:socialitis)
+      @ap.projects << projects(:pivots)
+      @ap.projects << projects(:offline)
+      @ap.projects.each do |p|
+        p.statuses.destroy_all
+      end
+    end
+    context 'when the latest status is offline and there are prior online status' do
+      it 'should return the published_at of latest prior online status' do
+        expected = projects(:pivots).statuses.create!(online: true,
+                                                       success: false,
+                                                       published_at: '2012-12-01 12:00:00')
+        projects(:socialitis).statuses.create!(online: true, success: false, published_at: '2012-11-01 12:00:00')
+        projects(:socialitis).statuses.create!(online: false, success: false, published_at: nil)
+        @ap.reload.latest_status.online?.should == false
+        @ap.last_published_at.should == expected.published_at
+      end
+    end
+
+    context 'when all statuses are offline' do
+      it 'should return nil' do
+        projects(:socialitis).statuses.create!(online: false, success: false)
+        projects(:pivots).statuses.create!(online: false, success: false)
+        projects(:offline).statuses.create!(online: false, success: false)
+        @ap.reload.statuses.inject(false){ |memo, curr| memo || curr.online? }.should == false
+        @ap.reload.last_published_at.should == nil
+      end
+    end
+
+    context 'when the latest status is online' do
+      it 'should return published at of latest ap status' do
+        first = projects(:socialitis).statuses.create!(online: true, success: false, published_at: '2012-12-01 12:00:00')
+        @ap.reload.latest_status.online?.should == true
+        @ap.reload.last_published_at.should == first.published_at
+      end
+    end
+
+    context 'when there are no statuses' do
+      it 'should return nil' do
+        @ap.reload.last_published_at.should == nil
+      end
     end
   end
 

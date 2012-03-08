@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project do
   before(:each) do
-    @project = CruiseControlProject.new(:name => "my_cc_project", :feed_url => "http://foo.bar.com:3434/projects/mystuff/baz.rss")
+    @project = CruiseControlProject.new(:name => "my_cc_project", code:'mccp', :feed_url => "http://foo.bar.com:3434/projects/mystuff/baz.rss")
   end
 
   describe "validations" do

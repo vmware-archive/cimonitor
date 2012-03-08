@@ -1,40 +1,60 @@
+@import "constants.css.scss";
+
+/* CSS Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup,
+var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer,
+header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
 body {
-	font-family: Helvetica, sans-serif;
-	font-size: 13px;
-	background: white;
+  font-family: Helvetica, sans-serif;
+  font-size: 13px;
+  background: white;
   margin: 0;
 }
 
 body, p, li {
-	color: black;
+  color: black;
 }
 
 p {
-	font-size: 1em;
-	line-height: 1.6em;
-	font-weight: normal;
-	margin: 0 0 1.6em 0;
-	padding: 0;
+  font-size: 1em;
+  line-height: 1.6em;
+  font-weight: normal;
+  margin: 0 0 1.6em 0;
+  padding: 0;
 }
-
-/*
-=Headings
-*/
 
 h1 {
   font-family: Helvetica, sans-serif;
-	padding: 0;
-	line-height: 1em;
-	margin: 15px 0;
   font-weight: bold;
+  font-size: 2.4em;
+  color: #2B2820;
 }
 
-.page {
+h2 {
+  font-family: Helvetica, sans-serif;
+  padding: 0;
+  line-height: 1em;
+}
+
+.page{
   margin: 15px;
-}
 
-.page h1 {
-	font-size: 2.4em;
+  &.dashboards {
+    margin: 0px;
+    padding: 5px;
+    background: black;
+    overflow: hidden;
+  }
 }
 
 .error {
@@ -45,29 +65,21 @@ h1 {
   color: #000000;
 }
 
-/*
-=Links
-*/
-
 a,
 a:link {
-	color: black;
+  color: black;
 }
 
 a:hover {
   color: #aa1224;
 }
 
-
-/*
-=Boxes
-*/
+/* Projects */
 
 .box {
-	position: relative;
-	height: 213px;
-	width: 213px;
-	padding: 15px;
+  position: relative;
+  height: 213px;
+  width: 213px;
 }
 
 #header {
@@ -92,72 +104,128 @@ a:hover {
 
 .project {
   float:left;
-  margin-top:15px;
-  margin-left:10px;
-  margin-bottom:15px;
-  width:230px;
-  height:210px;
+  margin: 5px;
+  width:620px;
+  height:200px;
 
-}
+  h1 {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: #2B2820;
 
-.project_status.green {
-  background: url("/assets/checkmark.png") no-repeat;
-  width: 50px;
-  height: 50px;
-  margin: 0 0 25px 80px;
-}
-.project_status.red {
-  background: url("/assets/exclamation.png") no-repeat;
-  width: 50px;
-  height: 50px;
-  margin: 0 0 25px 97px;
-}
-.project_status.building.green {
-  background-image: url("/assets/build-loader-green.gif");
-  width: 200px;
-  height: 50px;
-  margin: 0 0 25px 20px;
-}
-.project_status.building.red {
-  background-image: url("/assets/build-loader-red.gif");
-  width: 200px;
-  height: 50px;
-  margin: 0 0 25px 20px;
-}
-.box.redbox {
-  background: url('/assets/redbox.png') no-repeat top left;
-}
+    a, a:hover, a:visited {
+      color: #2B2820;
+      text-decoration: none;
+    }
+  }
 
-.box.redbox-aggregate {
-  background: url('/assets/redbox-aggregate.png') no-repeat top left;
-}
-.box.greenbox {
-  background: url('/assets/greenbox.png') no-repeat top left;
-}
-.box.greenbox-aggregate {
-  background: url("/assets/greenbox-aggregate.png") no-repeat top left;
-}
-.box.bluebox {
-  background: url('/assets/bluebox.png') no-repeat top left;
-}
-.box.bluebox-aggregate {
-  background: url('/assets/bluebox-aggregate.png') no-repeat top left;
-}
-.tweet.offline {
-  background: url('/assets/bluebox-aggregate.png') no-repeat top left;
+  > div {
+    height: 100%;
+  }
+
+  &.greenbox {
+
+    .tile_left {
+      background: $green;
+      .project_name {
+        background: $light-green;
+      }
+    }
+    .tile_right{
+      background: $lighter-green;
+      border-right: solid $green 10px;
+    }
+    &.aggregate .tile_left {
+      @include linear-gradient(0deg, $green 50%, $stripe-green 51%);
+    }
+  }
+
+  &.redbox {
+    .tile_left {
+      background: $red;
+      .project_name {
+        background: $light-red;
+      }
+
+    }
+    .tile_right{
+      background: $lighter-red;
+      border-right: solid $red 10px;
+      .sparkline .item {
+        background: $sparkline-red;
+      }
+    }
+    &.aggregate .tile_left {
+      @include linear-gradient(0deg, $red 50%, $stripe-red 51%);
+    }
+  }
+
+
+  &.greybox {
+    .tile_left {
+      background: $grey;
+      .project_name {
+        background: $light-grey;
+      }
+    }
+    .tile_right{
+      background: $lighter-grey;
+      border-right: solid $grey 10px;
+      .sparkline .item {
+        background: $sparkline-grey;
+      }
+    }
+    &.aggregate .tile_left{
+      @include linear-gradient(0deg, $grey 50%, $stripe-grey 51%);
+    }
+  }
+
+
+
+  &.box {
+    .tile_left {
+      > div {
+        text-align: left;
+      }
+      float: left;
+      width: 430px;
+
+      .project_code {
+        height: 130px;
+        padding: 20px 0px 0px 15px;
+      }
+
+      .project_name {
+        text-align: left;
+        padding: 10px 0 10px 15px;
+        height: 30px;
+        font-size: 30px;
+      }
+
+      .project_name a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+
+    .tile_right {
+      float: right;
+      width: 180px;
+      text-align: center;
+    }
+  }
+
+  &.aggregate {
+    .tile_left {
+      background-size: 78.5px 78.5px;
+    }
+  }
+
 }
 
 .cached_images {
   display: none;
-}
-
-
-
-.project_status.offline {
-  background: url("/assets/questionmark.png") no-repeat;
-  width: 50px;
-  height: 50px;
-  margin: 0 0 27px 95px;
 }
 
 .project_visit {
@@ -165,41 +233,16 @@ a:hover {
   font-size: smaller;
 }
 
-.project_name {
-  text-align: center;
-/*  white-space: nowrap;*/
-}
-
-.project_name a {
-  text-decoration: none;
-  color: black;
-}
-
-.project_status {
-  margin-top: 5px;
-  margin-bottom: 34px;
-  text-align: center;
-/*  vertical-align: baseline;*/
-  position: absolute;
-  bottom: 0;
-  width: 87%;
-}
-
 .project_published_at {
   text-align: center;
-  font-size: 1em;
+  font-size: 44px;
+  padding-top: 40px;
 }
 
-.project_red_since {
+.project_history{
+  margin-top: 25px;
   text-align: center;
-  font-size: 0.9em;
-  margin-left: -0.2;
-  margin-right: -0.2;
-}
-
-.project_invalid {
-  text-align: center;
-  font-size: 1em;
+  padding-bottom: 2px;
 }
 
 #top_right {
@@ -211,13 +254,6 @@ a:hover {
 
 #advertisement {
   font-size: smaller;
-}
-
-.status_image {
-  border: 0;
-}
-
-.page .status_image {
 }
 
 .logo_page {
@@ -337,7 +373,7 @@ a:hover.button {
 
 .add_button {
   margin-left: 15px;
-  /* text-transform: uppercase; */
+/* text-transform: uppercase; */
   font-size: 13px;
 }
 
@@ -410,4 +446,8 @@ form em {
 
 .twtr-tweet-text em {
   color: #ffffff;
+}
+
+.projects.index {
+ h1 { margin-bottom: 10px; }
 }

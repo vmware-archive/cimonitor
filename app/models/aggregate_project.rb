@@ -7,6 +7,8 @@ class AggregateProject < ActiveRecord::Base
   scope :with_projects, joins(:projects).where(:aggregate_projects => {:enabled => true}).select("distinct aggregate_projects.*")
 
   acts_as_taggable
+  validates :name, presence: true
+  validates :code, presence: true, length: {maximum: 4}
 
   def red?
     projects.detect {|p| p.red? }
@@ -24,12 +26,22 @@ class AggregateProject < ActiveRecord::Base
   end
 
   def status
-    statuses.last
+    latest_status
   end
 
   def statuses
-    projects.collect {|p| p.status }.sort_by(&:id)
+    projects.select {|p| !p.latest_status.nil?}.collect{|p| p.latest_status}.sort_by(&:id)
   end
+
+  def latest_status
+    statuses.last
+  end
+
+  def last_published_at
+    last_online_status = ProjectStatus.online(projects, 1).first
+    last_online_status ? last_online_status.published_at : nil
+  end
+
 
   def building?
     projects.detect{|p| p.building? }

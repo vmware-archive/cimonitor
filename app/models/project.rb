@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
   acts_as_taggable
 
   validates_presence_of :name
+  validates :code, presence: true, length: {maximum: 4}
   validates_presence_of :feed_url
   validate :ec2_presence
 
@@ -107,6 +108,11 @@ class Project < ActiveRecord::Base
 
   def has_auth?
     auth_username.present? || auth_password.present?
+  end
+
+  def last_published_at
+    latest_online_status = ProjectStatus.online(self, 1).first
+    latest_online_status ? latest_online_status.published_at : nil
   end
 
   private
