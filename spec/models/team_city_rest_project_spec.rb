@@ -6,7 +6,7 @@ describe TeamCityRestProject do
 
     before(:each) do
       @rest_url = "http://foo.bar.com:3434/app/rest/builds?locator=running:all,buildType:(id:bt3)"
-      @project = TeamCityRestProject.new(:name => "my_teamcity_project", :feed_url => @rest_url)
+      @project = TeamCityRestProject.new(:name => "my_teamcity_project", code:'mtpp', :feed_url => @rest_url)
     end
 
     describe "#feed_url" do
@@ -142,7 +142,7 @@ describe TeamCityRestProject do
 
     describe "#building_parser" do
       before(:each) do
-        @project = TeamCityRestProject.new(:name => "my_teamcity_project", :feed_url => "Pulse")
+        @project = TeamCityRestProject.new(:name => "my_teamcity_project", code:'mtpp',  :feed_url => "Pulse")
       end
 
       context "with a valid response that the project is building" do

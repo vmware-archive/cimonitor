@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 shared_examples_for "all build history fetches" do
-  it "should not create a new status entry if the status has not changed since the previous fetch" do
+  it "should not create a new project_status entry if the project_status has not changed since the previous fetch" do
     status_count = @project.statuses.count
-    fetch_build_history_with_xml_response(@response_xml)
+    retrieve_status_with_xml_response(@response_xml)
     @project.statuses.count.should == status_count
   end
 end
@@ -44,12 +44,11 @@ describe StatusFetcher do
     end
   end
 
-
   before(:each) do
     @project = projects(:socialitis)
   end
 
-  describe "#fetch_build_history" do
+  describe "#retrieve_status_for" do
     describe "with pubDate set with epoch" do
       before(:all) do
         @response_doc = Nokogiri::XML(@response_xml = CCRssExample.new("never_green.rss").read)
@@ -57,8 +56,8 @@ describe StatusFetcher do
 
       let!(:old_status_count) { @project.statuses.count }
       before(:each) do
-        Timecop.freeze
-        fetch_build_history_with_xml_response(@response_xml)
+        Timecop.freeze(Time.now)
+        retrieve_status_with_xml_response(@response_xml)
       end
 
       after(:each) do
@@ -77,7 +76,7 @@ describe StatusFetcher do
       end
 
       before(:each) do
-        fetch_build_history_with_xml_response(@response_xml)
+        retrieve_status_with_xml_response(@response_xml)
       end
 
       it_should_behave_like "status for a valid build history xml response"
@@ -94,7 +93,7 @@ describe StatusFetcher do
       end
 
       before(:each) do
-        fetch_build_history_with_xml_response(@response_xml)
+        retrieve_status_with_xml_response(@response_xml)
       end
 
       it_should_behave_like "status for a valid build history xml response"
@@ -110,7 +109,7 @@ describe StatusFetcher do
       end
 
       before(:each) do
-        fetch_build_history_with_xml_response(@response_xml)
+        retrieve_status_with_xml_response(@response_xml)
       end
 
       it_should_behave_like "all build history fetches"
@@ -122,7 +121,7 @@ describe StatusFetcher do
 
     describe "with exception while parsing xml" do
       before do
-        fetch_build_history_with_xml_response(Exception.new)
+        retrieve_status_with_xml_response(Exception.new)
       end
 
       it "should return error" do
@@ -131,11 +130,11 @@ describe StatusFetcher do
     end
   end
 
-  describe "#fetch_building_status" do
+  describe "#retrieve_building_status_for" do
     context "with a valid response that the project is building" do
       before(:each) do
         @response_xml = BuildingStatusExample.new("socialitis_building.xml").read
-        fetch_building_status_with_xml_response(@response_xml)
+        retrieve_building_status_with_xml_response(@response_xml)
       end
 
       it "should set the building flag on the project to true" do
@@ -147,7 +146,7 @@ describe StatusFetcher do
       before(:each) do
         @response_xml = BuildingStatusExample.new("socialitis_building.xml").read
         @project.name = "Socialitis with different name than CC project name"
-        fetch_building_status_with_xml_response(@response_xml)
+        retrieve_building_status_with_xml_response(@response_xml)
       end
 
       it "should set the building flag on the project to true" do
@@ -159,7 +158,7 @@ describe StatusFetcher do
       before(:each) do
         @response_xml = BuildingStatusExample.new("socialitis_building.xml").read.downcase
         @project.feed_url = @project.feed_url.upcase
-        fetch_building_status_with_xml_response(@response_xml)
+        retrieve_building_status_with_xml_response(@response_xml)
       end
 
       it "should set the building flag on the project to true" do
@@ -170,7 +169,7 @@ describe StatusFetcher do
     context "with a valid response that the project is not building" do
       before(:each) do
         @response_xml = BuildingStatusExample.new("socialitis_not_building.xml").read
-        fetch_building_status_with_xml_response(@response_xml)
+        retrieve_building_status_with_xml_response(@response_xml)
       end
 
       it "should set the building flag on the project to false" do
@@ -181,7 +180,7 @@ describe StatusFetcher do
     context "with an invalid response" do
       before(:each) do
         @response_xml = "<foo><bar>baz</bar></foo>"
-        fetch_building_status_with_xml_response(@response_xml)
+        retrieve_building_status_with_xml_response(@response_xml)
       end
 
       it "should set the building flag on the project to false" do
@@ -220,13 +219,13 @@ describe StatusFetcher do
 
   private
 
-  def fetch_build_history_with_xml_response(xml)
+  def retrieve_status_with_xml_response(xml)
     fetcher_with_mocked_url_retriever(@project.feed_url, xml).retrieve_status_for(@project)
     status = Delayed::Worker.new.work_off(1)
     @project.reload
   end
 
-  def fetch_building_status_with_xml_response(xml)
+  def retrieve_building_status_with_xml_response(xml)
     fetcher_with_mocked_url_retriever(@project.build_status_url, xml).retrieve_building_status_for(@project)
     status = Delayed::Worker.new.work_off(1)
     @project.reload

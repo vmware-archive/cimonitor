@@ -5,7 +5,9 @@ describe Project do
   end
 
   before do
-    @project = RandomProject.new(:name => "my_project", :feed_url => "http://foo.bar.com:3434/projects/mystuff/baz.rss")
+    @project = RandomProject.new(:name => "my_project",
+                                :code => 'PROJ',
+                                 :feed_url => "http://foo.bar.com:3434/projects/mystuff/baz.rss")
   end
 
   it "should be valid" do
@@ -21,6 +23,21 @@ describe Project do
       @project.name = ""
       @project.should_not be_valid
       @project.errors[:name].should be_present
+    end
+
+    describe "code" do
+      it "should be present" do
+        @project.code = ""
+        @project.should_not be_valid
+        @project.errors[:code].should be_present
+      end
+      it "should not be longer than 4 characters" do
+        @project.code = "FOUR"
+        @project.should be_valid
+        @project.code = "FIVER"
+        @project.should_not be_valid
+        @project.errors[:code].should be_present
+      end
     end
 
     it "should require a feed url" do
@@ -110,7 +127,7 @@ describe Project do
     it "should have an aggregate project, if set" do
       @project = projects(:socialitis)
       @project.aggregate_project.should be_nil
-      @ap = AggregateProject.create(:name => "ap")
+      @ap = AggregateProject.create(code:'ap', name:'ap')
       @project.aggregate_project = @ap
       @project.save.should be_true
       @project = Project.find_by_name('Socialitis')

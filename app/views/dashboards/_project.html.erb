@@ -1,42 +1,31 @@
 <%
    if project.red?
-       background = 'redbox'
-       background = 'redbox-aggregate' if project.is_a? AggregateProject
-       if project.building?
-         status_class = 'project_status red building'
-       else
-         status_class = 'project_status red'
-       end
+     background = 'redbox'
    elsif project.green?
-       background = 'greenbox'
-       background = 'greenbox-aggregate' if project.is_a? AggregateProject
-       if project.building?
-         status_class = 'project_status green building'
-       else
-         status_class = 'project_status green'
-       end
+     background = 'greenbox'
    else
-       background = 'bluebox'
-       background = 'bluebox-aggregate' if project.is_a? AggregateProject
-       status_class = 'project_status offline'
+     background = 'greybox'
    end
+   background += ' aggregate' if project.is_a? AggregateProject
 %>
 
-<div class="box <%= background %>" project_id="<%= project.id %>" >
-  <div class="project_name <%= project.green? ? 'success' : 'error' %>">
-    <h1><%= link_to(h(project.name), project.url) %></h1>
+<div class="project box <%= background %>" project_id="<%= project.id %>" >
+  <div class="tile_left">
+    <div class="project_code">
+      <h1><%= link_to(project.code, project.url) %></h1>
+    </div>
+    <div class="project_name">
+      <h2><%= link_to(project.name, project.url) %></h2>
+    </div>
   </div>
 
-  <% relative_status_messages_for(project).each do |css_class, message| %>
-      <div class="<%= css_class %>">
-        <%= message %>
+  <div class="tile_right">
+      <div class="project_published_at">
+        <%= simple_time_for(project.last_published_at) %>
       </div>
-  <% end %>
-
-  <div class="project_history">
-    <%= render :partial=>'dashboards/history', :locals=>{:project=>project} %>
+    <div class="project_history">
+      <%= render :partial=>'dashboards/history', :locals=>{:project=>project} %>
+    </div>
   </div>
 
-  <div class="<%= status_class %>">
-  </div>
 </div>

@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
   acts_as_taggable
 
   validates_presence_of :name
+  validates :code, presence: true, length: {maximum: 4}
   validates_presence_of :feed_url
   validate :ec2_presence
 
@@ -109,13 +110,18 @@ class Project < ActiveRecord::Base
     auth_username.present? || auth_password.present?
   end
 
+  def last_published_at
+    latest_online_status = ProjectStatus.online(self, 1).first
+    latest_online_status ? latest_online_status.published_at : nil
+  end
+
   private
   def ec2_presence
     unless self.ec2_instance_id.blank? && self.ec2_access_key_id.blank? && self.ec2_secret_access_key.blank? && has_no_day?
       errors.add(:ec2_instance_id, "must be present if using Lobot") if self.ec2_instance_id.blank?
       errors.add(:ec2_access_key_id, "must be present if using Lobot") if self.ec2_access_key_id.blank?
       errors.add(:ec2_secret_access_key, "must be present if using Lobot") if self.ec2_secret_access_key.blank?
-      errors.add_to_base("Must have a day checked if using Lobot") if has_no_day?
+      errors.add(:base, "Must have a day checked if using Lobot") if has_no_day?
     end
   end
 

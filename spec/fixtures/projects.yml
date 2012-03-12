@@ -1,39 +1,46 @@
 pivots:
+  code: Pivt
   name: Pivots
   type: CruiseControlProject
   feed_url: http://ci.pivotallabs.com:3333/projects/pivots.rss
   enabled: true
   latest_status_id: 1
 socialitis:
+  code: Soci
   name: Socialitis
   type: CruiseControlProject
   feed_url: http://ci.pivotallabs.com:3333/projects/socialitis.rss
   enabled: true
   latest_status_id: 4
 never_green:
+  code: Lumo
   name: Lumos
   type: CruiseControlProject
   feed_url: http://lumos-ci:3333/projects/lumos.rss
   enabled: true
   latest_status_id: 5
 offline:
+  code: Offl
   name: Offline
   type: CruiseControlProject
   feed_url: http://gnip-ci:3333/projects/gnip.rss
   enabled: true
   latest_status_id: 9
 disabled:
+  code: Core
   name: Core Bundle
   type: CruiseControlProject
   feed_url: http://core_bundle-ci:3333/projects/core_bundle.rss
   enabled: false
 many_builds:
+  code: Many
   name: Many Builds
   type: CruiseControlProject
   feed_url: http://many_builds-ci:3333/projects/many_builds.rss
   enabled: true
   latest_status_id: 33
 red_currently_building:
+  code: Red
   name: Red Currently Building
   type: CruiseControlProject
   feed_url: http://red_currently_building-ci:3333/projects/red_currently_building.rss
@@ -41,6 +48,7 @@ red_currently_building:
   building: true
   latest_status_id: 10
 green_currently_building:
+  code: Gren
   name: Green Currently Building
   type: CruiseControlProject
   feed_url: http://green_currently_building-ci:3333/projects/green_currently_building.rss
@@ -48,11 +56,13 @@ green_currently_building:
   building: true
   latest_status_id: 11
 never_built:
+  code: Nevr
   name: Never built
   type: CruiseControlProject
   feed_url: http://never-ci:3333/projects/never.rss
   enabled: true
 internal_project1:
+  code: AIP1
   name: Aggregated Internal Project 1
   type: CruiseControlProject
   feed_url: http://never-ci:3333/projects/internal_project1.rss
@@ -60,6 +70,7 @@ internal_project1:
   aggregate_project: internal_projects_aggregate
   latest_status_id: 12
 internal_project2:
+  code: AIP2
   name: Aggregated Internal Project 2
   type: CruiseControlProject
   feed_url: http://never-ci:3333/projects/internal_project2.rss
@@ -67,6 +78,7 @@ internal_project2:
   aggregate_project: internal_projects_aggregate
   latest_status_id: 13
 internal_project3:
+  code: IP3
   name: Aggregated Internal Project with Different Tag
   type: CruiseControlProject
   feed_url: http://never-ci:3333/projects/internal_project3.rss

@@ -1,0 +1,453 @@
+@import "constants.css.scss";
+
+/* CSS Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup,
+var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer,
+header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 13px;
+  background: white;
+  margin: 0;
+}
+
+body, p, li {
+  color: black;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.6em;
+  font-weight: normal;
+  margin: 0 0 1.6em 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 2.4em;
+  color: #2B2820;
+}
+
+h2 {
+  font-family: Helvetica, sans-serif;
+  padding: 0;
+  line-height: 1em;
+}
+
+.page{
+  margin: 15px;
+
+  &.dashboards {
+    margin: 0px;
+    padding: 5px;
+    background: black;
+    overflow: hidden;
+  }
+}
+
+.error {
+  color: #000000;
+}
+
+.success {
+  color: #000000;
+}
+
+a,
+a:link {
+  color: black;
+}
+
+a:hover {
+  color: #aa1224;
+}
+
+/* Projects */
+
+.box {
+  position: relative;
+  height: 213px;
+  width: 213px;
+}
+
+#header {
+  margin: 0;
+  padding: .8em 1em;
+  background-color: #88C2E5;
+}
+
+#header .company_logo {
+  margin: 0.5em;
+}
+
+#header a, #header img {
+  border: 0
+}
+
+#title {
+  padding-top: 10px;
+  margin-left: 300px;
+  text-align: left;
+}
+
+.project {
+  float:left;
+  margin: 5px;
+  width:620px;
+  height:200px;
+
+  h1 {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: #2B2820;
+
+    a, a:hover, a:visited {
+      color: #2B2820;
+      text-decoration: none;
+    }
+  }
+
+  > div {
+    height: 100%;
+  }
+
+  &.greenbox {
+
+    .tile_left {
+      background: $green;
+      .project_name {
+        background: $light-green;
+      }
+    }
+    .tile_right{
+      background: $lighter-green;
+      border-right: solid $green 10px;
+    }
+    &.aggregate .tile_left {
+      @include linear-gradient(0deg, $green 50%, $stripe-green 51%);
+    }
+  }
+
+  &.redbox {
+    .tile_left {
+      background: $red;
+      .project_name {
+        background: $light-red;
+      }
+
+    }
+    .tile_right{
+      background: $lighter-red;
+      border-right: solid $red 10px;
+      .sparkline .item {
+        background: $sparkline-red;
+      }
+    }
+    &.aggregate .tile_left {
+      @include linear-gradient(0deg, $red 50%, $stripe-red 51%);
+    }
+  }
+
+
+  &.greybox {
+    .tile_left {
+      background: $grey;
+      .project_name {
+        background: $light-grey;
+      }
+    }
+    .tile_right{
+      background: $lighter-grey;
+      border-right: solid $grey 10px;
+      .sparkline .item {
+        background: $sparkline-grey;
+      }
+    }
+    &.aggregate .tile_left{
+      @include linear-gradient(0deg, $grey 50%, $stripe-grey 51%);
+    }
+  }
+
+
+
+  &.box {
+    .tile_left {
+      > div {
+        text-align: left;
+      }
+      float: left;
+      width: 430px;
+
+      .project_code {
+        height: 130px;
+        padding: 20px 0px 0px 15px;
+      }
+
+      .project_name {
+        text-align: left;
+        padding: 10px 0 10px 15px;
+        height: 30px;
+        font-size: 30px;
+      }
+
+      .project_name a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+
+    .tile_right {
+      float: right;
+      width: 180px;
+      text-align: center;
+    }
+  }
+
+  &.aggregate {
+    .tile_left {
+      background-size: 78.5px 78.5px;
+    }
+  }
+
+}
+
+.cached_images {
+  display: none;
+}
+
+.project_visit {
+  float: right;
+  font-size: smaller;
+}
+
+.project_published_at {
+  text-align: center;
+  font-size: 44px;
+  padding-top: 40px;
+}
+
+.project_history{
+  margin-top: 25px;
+  text-align: center;
+  padding-bottom: 2px;
+}
+
+#top_right {
+  position: absolute;
+  top: 0.25em;
+  right: 2em;
+  margin-top: 0.5em;
+}
+
+#advertisement {
+  font-size: smaller;
+}
+
+.logo_page {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.smaller_text {
+  font-size: smaller;
+}
+
+#flash_error {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: #aa1224;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+#flash_notice {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: #2B4C74;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+#openid_url {
+  background: url(/assets/login-bg.gif) no-repeat #FFF 5px;
+  padding-left: 25px;
+}
+
+/*
+Form Errors
+*/
+
+.field_with_errors {
+  padding: 2px;
+  margin-bottom: 25px;
+  background-color: red;
+  display: table;
+}
+
+#errorExplanation {
+  width: 550px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  margin-bottom: 0px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+table.projects {
+  border-collapse: collapse;
+  margin: 15px 0 40px 0;
+}
+
+table.projects tr th {
+  text-align: left;
+  font-size: 1.1em;
+  padding: 5px 15px;
+}
+
+table.projects tr td {
+  padding: 5px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+table.projects tr.odd td {
+  background-color: #eee;
+}
+
+table.projects tr.even {
+}
+
+.button,
+a:link.button {
+  background:#2B4C74;
+  padding: 2px 5px;
+  font-size: 12px;
+  color: #eeeeee;
+  text-decoration:none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  display:table-inline;
+  font-weight:bold;
+  letter-spacing: 1px;
+  box-shadow: 0 0 0 1px #3B6692, 0 0 0 2px #444;
+  -moz-box-shadow: 0 0 0 1px #3B6692, 0 0 0 2px #444;
+  -webkit-shadow: 0 0 0 1px #3B6692, 0 0 0 2px #444;
+}
+
+.button:hover,
+a:hover.button {
+  color: #eeeeee;
+  background: #14274A;
+}
+
+.add_button {
+  margin-left: 15px;
+/* text-transform: uppercase; */
+  font-size: 13px;
+}
+
+.tag_list {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: bold;
+}
+
+form {
+  background-color: #eeeeee;
+  margin: 30px;
+  padding: 30px;
+  width: 38em;
+}
+
+form label {
+  width: 9em;
+  display: inline-table;
+  vertical-align: top;
+  font-weight: bold;
+  text-align: right;
+  margin-right: 2em;
+}
+
+form em {
+  margin-top: .4em;
+  margin-left: 12em;
+  display: block;
+}
+
+#schedules label {
+  display: inline;
+  width: 3em;
+  margin-right: 0;
+  font-weight: normal;
+}
+
+.project.message .box {
+  background: url('/assets/greybox.png') no-repeat top left;
+}
+
+.project.message .box p {
+  margin: 5px 0 0 15px;
+  width: 183px;
+  height: 180px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 22px;
+  overflow:hidden;
+}
+
+.twtr-widget {
+  position: relative;
+  top: 4px;
+  left: 13px;
+}
+.twtr-bd {
+  height: 171px;
+  overflow: hidden;
+}
+
+.twtr-ft {
+  height: 7px;
+}
+
+.twtr-reply, .twtr-rt, .twtr-fav {
+  display: none;
+}
+
+.twtr-tweet-text em {
+  color: #ffffff;
+}
+
+.projects.index {
+ h1 { margin-bottom: 10px; }
+}

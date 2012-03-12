@@ -46,7 +46,7 @@ describe ProjectsController do
 
     it "should create projects by type" do
       lambda do
-        post :create, :project => {:name=>'name', :feed_url=>'http://www.example.com/job/example/rssAll', :type => HudsonProject.name}
+        post :create, :project => {:name=>'name', code: 'code', :feed_url=>'http://www.example.com/job/example/rssAll', :type => HudsonProject.name}
       end.should change(HudsonProject, :count).by(1)
       response.should redirect_to(projects_path)
     end
@@ -63,7 +63,7 @@ describe ProjectsController do
       end
 
       it "allows changing the type" do
-        project = HudsonProject.create(:name => "HP to CCP", :feed_url => "http://www.example.com/job/example/rssAll")
+        project = HudsonProject.create(:name => "HP to CCP", code:'cod1', :feed_url => "http://www.example.com/job/example/rssAll")
         project.should be_valid
         project.should be_a_kind_of(HudsonProject)
 
