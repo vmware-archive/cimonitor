@@ -38,4 +38,18 @@ class TeamCityRestProject < Project
     end
     status
   end
+
+  def content
+    UrlRetriever.new.retrieve_content_at(
+      feed_url,
+      auth_username,
+      auth_password
+    )
+  end
+
+  def update_status!
+    statuses << parse_project_status(content)
+    self.building = parse_building_status(content).building?
+    save!
+  end
 end
