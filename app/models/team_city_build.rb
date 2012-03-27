@@ -35,6 +35,8 @@ class TeamCityBuild < TeamCityRestProject
 
   def children
     TeamCityChildBuilder.parse(self, build_type_fetcher.call)
+  rescue Net::HTTPError
+    []
   end
 
   private

@@ -243,6 +243,14 @@ describe TeamCityBuild do
       build.build_type_fetcher = proc { build_type_xml }
     end
 
+    context "remote call fails" do
+      before do
+        build.build_type_fetcher = proc { raise Net::HTTPError.new(1,2)}
+      end
+
+      it { should be_empty }
+    end
+
     context "no children" do
       let(:build_type_xml) do
         <<-XML
