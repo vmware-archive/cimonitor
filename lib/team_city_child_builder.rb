@@ -1,22 +1,25 @@
-class TeamCityParentProjectParser
+class TeamCityChildBuilder
 
-  def self.parse(content)
-    new(content).build
+  def self.parse(parent, content)
+    new(parent, content).build
   end
 
-  def initialize(content)
+  def initialize(parent, content)
+    @parent = parent
     @content = content
   end
 
   def build
-    dependencies + [project]
+    dependencies
   end
 
   private
 
-  def build_project(id)
-    TeamCityRestProject.new(
-      :feed_url => "#{base_url}/app/rest/builds?locator=running:all,buildType:(id:#{id})"
+  def build_project(build_id)
+    TeamCityBuild.new(
+      :feed_url => @parent.feed_url.gsub(@parent.build_id, build_id),
+      :auth_username => @parent.auth_username,
+      :auth_password => @parent.auth_password
     )
   end
 
@@ -24,10 +27,6 @@ class TeamCityParentProjectParser
     parsed_content.xpath("//snapshot-dependency").collect {|d| d.attributes["id"].to_s }.map do |id|
       build_project id
     end
-  end
-
-  def project
-    build_project parsed_content.xpath("//buildType").first.attributes["id"].to_s
   end
 
   def parsed_content
