@@ -172,57 +172,5 @@ describe TeamCityRestProject do
         end
       end
     end
-
-    describe "#content" do
-      let(:response) { double(:response) }
-
-      it "fetches the content at the feed url" do
-        UrlRetriever.any_instance.should_receive(:retrieve_content_at).
-          with(project.feed_url, project.auth_username, project.auth_password).
-          and_return(response)
-
-        project.content.should == response
-      end
-    end
-
-    describe "#update_status!" do
-      it "should fetch the content" do
-        project.should_receive(:content).twice
-        project.update_status!
-      end
-
-      context "parse_building_status" do
-        before do
-          project.stub(:content).and_return "foo"
-        end
-
-        it "should call parse_building_status with content" do
-          project.should_receive(:parse_building_status).with("foo").and_return stub(:building? => true)
-          project.update_status!
-        end
-
-        it "should set building to be the building_status" do
-          project.stub(:parse_building_status).and_return stub(:building? => true)
-          project.update_status!
-          project.building.should be_true
-        end
-      end
-
-      context "parse_project_status" do
-        before do
-          project.stub(:content)
-        end
-
-        it "should call the parse_project_status" do
-          project.should_receive(:parse_project_status).and_return ProjectStatus.new
-          project.update_status!
-        end
-
-        it "should create a new status object" do
-          expect { project.update_status! }.to change(ProjectStatus, :count).by(1)
-        end
-      end
-    end
-
   end
 end
