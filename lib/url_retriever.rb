@@ -14,8 +14,11 @@ module UrlRetriever
     else
       response = do_get(url)
     end
-    raise Net::HTTPError.new("Error: got non-200 return code #{response.code} from #{url}, body = '#{response.body}'", nil) unless response.code.to_i == 200
-    response.body
+    if response.code.to_i == 200
+      response.body
+    else
+      raise Net::HTTPError.new("Error: got non-200 return code #{response.code} from #{url}, body = '#{response.body}'", nil)
+    end
   end
 
   private
@@ -34,8 +37,10 @@ module UrlRetriever
 
     yield(get) if block_given?
 
-    res = http(uri).start { |web| web.request(get)}
+    res = http(uri).start { |web| web.request(get) }
     res
+  rescue Errno::ECONNREFUSED
+    raise Net::HTTPError.new("Error: Could not connect to the remote server", nil)
   end
 
   def digest_auth(get, response, username, password)
