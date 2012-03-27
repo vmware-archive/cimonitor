@@ -2,7 +2,9 @@ require 'net/http'
 require 'net/https'
 require 'httpi'
 
-class UrlRetriever
+module UrlRetriever
+  extend self
+
   def retrieve_content_at(url, username = nil, password = nil)
     if username.present? && password.present?
       response = do_get(url) { |get| get.basic_auth(username, password) }
