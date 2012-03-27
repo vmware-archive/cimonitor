@@ -11,7 +11,7 @@ describe TeamCityBuildStatus do
   end
 
   describe "#fetch" do
-    let(:build) { double(:build, :url => "http", :username => "foo", :password => "bar") }
+    let(:build) { double(:build, :feed_url => "http", :auth_username => "foo", :auth_password => "bar") }
     let(:status) { TeamCityBuildStatus.new(build) }
     let(:response_xml) do
       <<-XML
@@ -25,13 +25,13 @@ describe TeamCityBuildStatus do
 
     before do
       UrlRetriever.stub(:retrieve_content_at).
-        with(build.url, build.username, build.password).
+        with(build.feed_url, build.auth_username, build.auth_password).
         and_return(response_xml)
     end
 
     it "uses the urlretriever to fetch the status" do
       UrlRetriever.should_receive(:retrieve_content_at).
-        with(build.url, build.username, build.password).
+        with(build.feed_url, build.auth_username, build.auth_password).
         and_return(response_xml)
       status.fetch
     end

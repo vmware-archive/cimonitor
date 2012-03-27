@@ -37,7 +37,7 @@ class TeamCityBuildStatus
   end
 
   def fetch_build_response
-    response = UrlRetriever.retrieve_content_at(build.url, build.username, build.password)
+    response = UrlRetriever.retrieve_content_at(build.feed_url, build.auth_username, build.auth_password)
     response = Hash.from_xml response
 
     @build_response = response['builds']['build']
