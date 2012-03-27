@@ -11,16 +11,229 @@ describe TeamCityBuild do
     end
   end
 
+  describe "#online?" do
+    subject { build.online? }
+    context "self online" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => false) }
+      let(:children) { [] }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      context "all children online" do
+        let(:children) { [double(:child, :online? => true)]}
+
+        it {should be_true}
+      end
+
+      context "some children offline" do
+        let(:children) {[double(:child, :online? => false)]}
+
+        it {should be_false}
+      end
+    end
+
+    context "self offline" do
+      let(:build_status) { double(:build_status, :online? => false, :green? => false) }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return []
+      end
+
+      it { should be_false }
+    end
+  end
+
+  describe "#success?" do
+    subject { build.success? }
+
+    context "self is green" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => true) }
+      let(:children) { [] }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      context "all children green" do
+        let(:children) { [double(:child, :green? => true)] }
+
+        it { should be_true }
+      end
+
+      context "some children red" do
+        let(:children) { [double(:child, :green? => false)] }
+
+        it { should be_false }
+      end
+    end
+
+    context "self is red" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => false) }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return []
+      end
+
+      it { should be_false }
+    end
+  end
+
+  describe "#red?" do
+    subject { build.red? }
+
+    context "self is not green" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => false) }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      context "any children green" do
+        let(:children) { [double(:child, :green? => true)] }
+
+        it { should be_true }
+      end
+    end
+
+    context "self is green" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => true) }
+      let(:children) { [] }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      it { should be_false }
+
+      context "some children red" do
+        let(:children) { [double(:child, :red? => true, :green? => false)] }
+
+        it { should be_true }
+      end
+    end
+  end
+
+  describe "#green?" do
+    subject { build.green? }
+
+    context "self is red" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => false) }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      context "any children green" do
+        let(:children) { [double(:child, :green? => true)] }
+
+        it { should be_false }
+      end
+    end
+
+    context "self is green" do
+      let(:build_status) { double(:build_status, :online? => true, :green? => true) }
+
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return children
+      end
+
+      context "any children green" do
+        let(:children) { [double(:child, :green? => true)] }
+
+        it { should be_true }
+      end
+
+      context "any children red" do
+        let(:children) { [double(:child, :green? => false)] }
+
+        it { should be_false }
+      end
+    end
+  end
+
+  describe "#building?" do
+    let(:build_status) { double(:build_status, :online? => true, :building? => building) }
+
+    before do
+      build.build_status_fetcher = proc { build_status }
+      build.stub(:children).and_return children
+    end
+
+    subject { build.building? }
+
+    context "is building" do
+      let(:building) { true }
+
+      context "any child is building" do
+        let(:children) { [double(:child, :online? => true, :building? => true)] }
+
+        it { should be_true }
+      end
+
+      context "no child is building" do
+        let(:children) { [double(:child, :online? => true, :building? => false)] }
+
+        it { should be_true }
+      end
+    end
+
+    context "is not building" do
+      let(:building) { false }
+
+      context "any child is building" do
+        let(:children) { [double(:child, :online? => true, :building? => true)] }
+
+        it { should be_true }
+      end
+
+      context "no child is building" do
+        let(:children) { [double(:child, :online? => true, :building? => false)] }
+
+        it { should be_false }
+      end
+    end
+  end
+
   describe "#status" do
     let(:build_status) { double(:build_status, :online? => online, :green? => green) }
     let(:online) { [true,false].sample }
     let(:green) { [true,false].sample }
 
-    before { build.build_status_fetcher = proc { build_status } }
-    subject { build.status }
+    context "isolation test" do
+      before { build.build_status_fetcher = proc { build_status } }
+      subject { build.status }
 
-    its(:online) { should == online }
-    its(:success) { should == green }
+      its(:online) { should == online }
+      its(:success) { should == green }
+    end
+
+    context "test boundary with default build status fetcher" do
+      let(:response_xml) do
+        <<-XML
+          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <builds count="1">
+            <build id="1" number="1" status="SUCCESS"/>
+          </builds>
+        XML
+      end
+
+      before { UrlRetriever.should_receive(:retrieve_content_at).and_return(response_xml) }
+
+      subject { build.status }
+
+      its(:online) { should be_true }
+      its(:success) { should be_true }
+    end
   end
 
   describe "#children" do

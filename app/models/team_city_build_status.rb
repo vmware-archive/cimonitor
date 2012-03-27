@@ -1,21 +1,12 @@
 class TeamCityBuildStatus
   attr_reader :build
-  # "#{base_url}/app/rest/builds?locator=running:all,buildType:(id:#{id})"
 
   def initialize(build)
     @build = build
   end
 
-  def fetch
-    @building = build_response["running"] == "true"
-    @green = build_response["status"] == "SUCCESS"
-    @online = true
-
-  rescue Net::HTTPError
-    @online = false
-  end
-
   def online?
+    fetch
     @online
   end
 
@@ -32,6 +23,18 @@ class TeamCityBuildStatus
   end
 
   private
+  def fetch
+    if build_response
+      @building = build_response["running"] == "true"
+      @green = build_response["status"] == "SUCCESS"
+      @online = true
+    else
+      @online = false
+    end
+  rescue Net::HTTPError
+    @online = false
+  end
+
   def build_response
     @build_response || fetch_build_response
   end

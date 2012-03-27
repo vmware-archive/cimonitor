@@ -6,6 +6,26 @@ class TeamCityBuild < TeamCityRestProject
     feed_url.match(/id:([^)]*)/)[1]
   end
 
+  def online?
+    status.online? && children.all?(&:online?)
+  end
+
+  def success?
+    green? && children.all?(&:green?)
+  end
+
+  def red?
+    !green? || children.any?(&:red?)
+  end
+
+  def green?
+    super && children.all?(&:green?)
+  end
+
+  def building?
+    build_status.building? || children.any?(&:building?)
+  end
+
   def status
     super.tap do |s|
       s.online = build_status.online?
@@ -24,7 +44,7 @@ class TeamCityBuild < TeamCityRestProject
   end
 
   def build_status_fetcher
-    @build_status_fetcher
+    @build_status_fetcher ||= proc { TeamCityBuildStatus.new self }
   end
 
   def build_type_fetcher
