@@ -12,6 +12,10 @@ describe TeamCityBuild do
   end
 
   describe "#online?" do
+    before do
+      build.stub(:publish_date).and_return Time.now
+    end
+
     subject { build.online? }
     context "self online" do
       let(:build_status) { double(:build_status, :online? => true, :green? => false) }
@@ -48,6 +52,10 @@ describe TeamCityBuild do
   end
 
   describe "#success?" do
+    before do
+      build.stub(:publish_date).and_return Time.now
+    end
+
     subject { build.success? }
 
     context "self is green" do
@@ -85,6 +93,10 @@ describe TeamCityBuild do
   end
 
   describe "#red?" do
+    before do
+      build.stub(:publish_date).and_return Time.now
+    end
+
     subject { build.red? }
 
     context "self is not green" do
@@ -122,6 +134,10 @@ describe TeamCityBuild do
   end
 
   describe "#green?" do
+    before do
+      build.stub(:publish_date).and_return Time.now
+    end
+
     subject { build.green? }
 
     context "self is red" do
@@ -205,35 +221,69 @@ describe TeamCityBuild do
   end
 
   describe "#status" do
-    let(:build_status) { double(:build_status, :online? => online, :green? => green) }
-    let(:online) { [true,false].sample }
-    let(:green) { [true,false].sample }
+    let(:build_status) { double(:build_status, :online? => true, :green? => false) }
+    let(:project_status) { double(:project_status) }
 
-    context "isolation test" do
-      before { build.build_status_fetcher = proc { build_status } }
-      subject { build.status }
+    before { build.build_status_fetcher = proc { build_status } }
 
-      its(:online) { should == online }
-      its(:success) { should == green }
+    subject { build.status }
+
+    context "latest_status exists" do
+      before { build.stub(:latest_status).and_return project_status }
+
+      it { should == build.latest_status }
     end
 
-    context "test boundary with default build status fetcher" do
-      let(:response_xml) do
-        <<-XML
-          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <builds count="1">
-            <build id="1" number="1" status="SUCCESS"/>
-          </builds>
-        XML
+    context "there are no peristent statuses" do
+      before { build.stub(:live_status).and_return(project_status) }
+
+      it { should == build.live_status }
+    end
+  end
+
+  describe "#publish_date" do
+    subject { build.publish_date }
+    let(:time) { 2.days.ago }
+
+    before do
+      build.stub(:children).and_return children
+      build.stub(:build_status).and_return double(:build_status, :publish_date => time)
+    end
+
+    context "no children" do
+      let(:children) { [] }
+
+      it { should == time }
+    end
+
+    context "one child" do
+      let(:child_time) { 1.day.ago }
+      let(:children) do
+        child = TeamCityBuild.new
+        child.stub(:build_status).and_return double(:status, :publish_date => child_time )
+        child.stub(:children).and_return []
+        [child]
       end
 
-      before { UrlRetriever.should_receive(:retrieve_content_at).and_return(response_xml) }
-
-      subject { build.status }
-
-      its(:online) { should be_true }
-      its(:success) { should be_true }
+      it { should == child_time }
     end
+    context "grandchildren" do
+      let(:grand_child_time) { Time.now }
+      let(:child_time) { 1.day.ago }
+
+      let(:children) do
+        child = TeamCityBuild.new
+        child.stub(:build_status).and_return double(:status, :publish_date => child_time )
+        grandchild = TeamCityBuild.new
+        grandchild.stub(:build_status).and_return double(:status, :publish_date => grand_child_time )
+        grandchild.stub(:children).and_return []
+        child.stub(:children).and_return [grandchild]
+        [child]
+      end
+
+      it { should == grand_child_time }
+    end
+
   end
 
   describe "#children" do
@@ -321,5 +371,62 @@ describe TeamCityBuild do
         subject.first.children.first.build_id.should == "bt5"
       end
     end
+  end
+
+  describe "#live_status" do
+    let(:build_status) { double(:build_status, :online? => true, :green? => false, :publish_date => Time.now) }
+
+    context "isolation test" do
+      before do
+        build.build_status_fetcher = proc { build_status }
+        build.stub(:children).and_return []
+      end
+
+      subject { build.live_status }
+
+      its(:online) { should be_true}
+      its(:success) { should be_false }
+      its(:published_at) { should be_present }
+    end
+
+    context "test boundary with default build status fetcher" do
+      let(:response_xml) do
+        <<-XML
+          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <builds count="1">
+            <build id="1" number="1" status="SUCCESS" startDate="20120328T114207-0400"/>
+          </builds>
+        XML
+      end
+
+      before do
+        build.stub(:children).and_return []
+        UrlRetriever.should_receive(:retrieve_content_at).and_return(response_xml)
+      end
+
+      subject { build.live_status }
+
+      its(:online) { should be_true }
+      its(:success) { should be_true }
+      its(:published_at) { should be_present }
+    end
+  end
+
+  describe "#parse_project_status" do
+    let(:live_status) { double(:live_status)}
+    before { build.stub(:live_status).and_return live_status }
+
+    subject { build.parse_project_status("foo")}
+
+    it { should == live_status }
+  end
+
+  describe "#parse_building_status" do
+    let(:build_status) { double(:build_status)}
+    before { build.build_status_fetcher = proc { build_status } }
+
+    subject { build.parse_building_status("foo")}
+
+    it { should == build_status }
   end
 end

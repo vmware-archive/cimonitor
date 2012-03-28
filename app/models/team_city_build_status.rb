@@ -10,8 +10,16 @@ class TeamCityBuildStatus
     @online
   end
 
+  def publish_date
+    if online?
+      Time.parse build_response['startDate']
+    else
+      nil
+    end
+  end
+
   def green?
-    online? && !building? && @green
+    online? && @green
   end
 
   def red?

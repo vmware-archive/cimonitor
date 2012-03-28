@@ -27,10 +27,33 @@ class TeamCityBuild < TeamCityRestProject
   end
 
   def status
-    super.tap do |s|
+    latest_status || live_status
+  end
+
+  def live_status
+    ProjectStatus.new.tap do |s|
       s.online = build_status.online?
       s.success = build_status.green?
+      s.published_at = publish_date
     end
+  end
+
+  def parse_project_status(*)
+    live_status
+  end
+
+  def parse_building_status(*)
+    build_status
+  end
+
+  def publish_date
+    date = build_status.publish_date
+    children.each do |child|
+      if child.publish_date > date
+        date = child.publish_date
+      end
+    end
+    date
   end
 
   def children
